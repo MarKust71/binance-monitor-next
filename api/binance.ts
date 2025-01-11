@@ -4,9 +4,11 @@ import { Spot } from '@binance/connector'
 const FUTURES_API_KEY = process.env.NEXT_PUBLIC_BINANCE_FUTURES_TEST_API_KEY
 const FUTURES_API_SECRET =
   process.env.NEXT_PUBLIC_BINANCE_FUTURES_TEST_API_SECRET
+const FUTURES_API_URL = process.env.NEXT_PUBLIC_BINANCE_FUTURES_TEST_API_URL
 
+// Binance Futures Connector
 export const client = new UMFutures(FUTURES_API_KEY, FUTURES_API_SECRET, {
-  baseURL: process.env.NEXT_PUBLIC_BINANCE_FUTURES_TEST_API_URL,
+  baseURL: FUTURES_API_URL,
 })
 
 // const SPOT_API_KEY = process.env.NEXT_PUBLIC_BINANCE_SPOT_API_KEY
@@ -15,6 +17,7 @@ const SPOT_API_KEY = process.env.NEXT_PUBLIC_BINANCE_SPOT_TEST_API_KEY
 const SPOT_API_SECRET = process.env.NEXT_PUBLIC_BINANCE_SPOT_TEST_API_SECRET
 const SPOT_API_URL = process.env.NEXT_PUBLIC_BINANCE_SPOT_TEST_API_URL
 
+// Binance Connector
 export const clientSpot = new Spot(SPOT_API_KEY, SPOT_API_SECRET, {
   testnet: false,
   baseURL: SPOT_API_URL,
@@ -23,6 +26,7 @@ export const clientSpot = new Spot(SPOT_API_KEY, SPOT_API_SECRET, {
 /*
 import {USDMClient} from "binance";
 
+// Binance native
 export const client = new USDMClient({
   api_key: API_KEY,
   api_secret: API_SECRET,
