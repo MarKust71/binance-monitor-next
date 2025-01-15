@@ -1,48 +1,27 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 'use client'
 
 import { useEffect, useMemo, useState } from 'react'
 import { account } from '@/actions/spot/account'
 import { getMyTrades } from '@/actions/spot/get-my-trades'
 import { getOrder } from '@/actions/spot/get-order'
-
-type Trade = Record<string, string>
-type MyTrades = Record<string, string>[]
+import { Ticker } from '@/components/ticker'
+import { Trades } from '@/components/trades'
+import { Order } from '@/components/order'
+import { Order as OrderType } from '@/components/order/order.types'
+import { Trade } from '@/components/trades/trades.types'
 
 const SYMBOL = 'ETHUSDT'
 const ORDER_ID = 610308
 
-const createBinanceWebSocket = (symbol: string, socket: string) => {
-  const url = process.env.NEXT_PUBLIC_BINANCE_SPOT_TEST_API_WSS
-
-  const ws = new WebSocket(url + `/ws/${symbol.toLowerCase()}${socket}`)
-
-  ws.onopen = () => {
-    console.log('connected')
-  }
-
-  ws.onclose = () => {
-    console.log('disconnected')
-  }
-
-  return ws
-}
-
-const ws = createBinanceWebSocket('ETHUSDT', '@trade')
-
 export default function Spot() {
-  const [trade, setTrade] = useState<Trade>()
-  const [myTrades, setMyTrades] = useState<MyTrades>()
-  const [order, setOrder] = useState()
-
-  ws.onmessage = (message: MessageEvent) => {
-    setTrade(JSON.parse(message.data))
-  }
+  const [myTrades, setMyTrades] = useState<Trade[]>([])
+  const [order, setOrder] = useState<OrderType>({})
 
   const profit = useMemo(() => {
-    if (!trade || !myTrades) return
+    if (!myTrades || !myTrades.length) return
 
-    const price = parseFloat(trade.p)
+    // const price = parseFloat(trade.p)
+    const price = 0
     const quantity = parseFloat(myTrades[0].qty)
     return {
       profit: (price - parseFloat(myTrades[0].price)) * quantity,
@@ -51,7 +30,7 @@ export default function Spot() {
           parseFloat(myTrades[0].price)) *
         100,
     }
-  }, [trade?.p, myTrades])
+  }, [myTrades])
 
   useEffect(() => {
     const info = async () => {
@@ -59,7 +38,7 @@ export default function Spot() {
       const accountInfo = await account()
       console.log('account', accountInfo)
 
-      console.log('myTrades...')
+      console.log('trades...')
       const trades = await getMyTrades(SYMBOL)
       console.log('trades', trades)
       setMyTrades(trades)
@@ -70,19 +49,20 @@ export default function Spot() {
       setOrder(order)
     }
     info()
-
-    return () => {
-      ws.close()
-    }
   }, [])
 
   return (
     <>
       <h1>Spot</h1>
-      <p>Ticker: price={trade?.p}</p>
-      <p>Trades: {JSON.stringify(myTrades)}</p>
-      <p>Order: {JSON.stringify(order)}</p>
+
+      <Ticker />
+
+      <Trades trades={myTrades} />
+
+      <Order order={order} />
+
       <p>Profit: {profit?.profit}</p>
+
       <p>Profit %: {profit?.profitPercentage}</p>
     </>
   )
