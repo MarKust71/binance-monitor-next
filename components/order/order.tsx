@@ -5,5 +5,5 @@ type OrderProps = {
 }
 
 export const Order = ({ order }: OrderProps) => {
-  return <p>Order: {JSON.stringify(order)}</p>
+  return <p style={{ marginBottom: '16px' }}>Order: {JSON.stringify(order)}</p>
 }

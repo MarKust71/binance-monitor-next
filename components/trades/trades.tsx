@@ -5,5 +5,7 @@ type TradesProps = {
 }
 
 export const Trades = ({ trades }: TradesProps) => {
-  return <p>Trades: {JSON.stringify(trades)}</p>
+  return (
+    <p style={{ marginBottom: '16px' }}>Trades: {JSON.stringify(trades)}</p>
+  )
 }

@@ -11,7 +11,7 @@ import { Order as OrderType } from '@/components/order/order.types'
 import { Trade } from '@/components/trades/trades.types'
 
 const SYMBOL = 'ETHUSDT'
-const ORDER_ID = 610308
+const ORDER_ID = 1456312
 
 export default function Spot() {
   const [myTrades, setMyTrades] = useState<Trade[]>([])
@@ -21,13 +21,14 @@ export default function Spot() {
     if (!myTrades || !myTrades.length) return
 
     // const price = parseFloat(trade.p)
-    const price = 0
+    const price = 3435.58
     const quantity = parseFloat(myTrades[0].qty)
+
     return {
-      profit: (price - parseFloat(myTrades[0].price)) * quantity,
+      profit: (price - parseFloat(myTrades[2].price)) * quantity,
       profitPercentage:
-        ((price - parseFloat(myTrades[0].price)) /
-          parseFloat(myTrades[0].price)) *
+        ((price - parseFloat(myTrades[2].price)) /
+          parseFloat(myTrades[2].price)) *
         100,
     }
   }, [myTrades])
