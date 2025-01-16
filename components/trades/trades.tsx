@@ -1,7 +1,7 @@
-import { Trade } from '@/components/trades/trades.types'
+import { ParsedTrade } from '@/utils/parse-trade/parse-trade.types'
 
 type TradesProps = {
-  trades: Trade[]
+  trades: ParsedTrade[]
 }
 
 export const Trades = ({ trades }: TradesProps) => {

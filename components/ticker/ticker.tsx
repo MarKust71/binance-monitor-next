@@ -1,43 +1,20 @@
-import { useEffect, useState } from 'react'
+import { useWebSocket } from '@/hooks/use-websocket'
+import useWebSocketStore from '@/stores/websocket.store'
 
 type Trade = Record<string, string>
 
-const SYMBOL = 'ETHUSDT'
-
-const createBinanceWebSocket = (symbol: string, socket: string) => {
-  const url = process.env.NEXT_PUBLIC_BINANCE_SPOT_TEST_API_WSS
-
-  const ws = new WebSocket(`${url}/ws/${symbol.toLowerCase()}${socket}`)
-
-  ws.onopen = () => {
-    console.log('connected')
-  }
-
-  ws.onclose = () => {
-    console.log('disconnected')
-  }
-
-  return ws
-}
-
-const ws = createBinanceWebSocket(SYMBOL, '@trade')
+const symbol = 'ETHUSDT'
+const socket = '@trade'
 
 export const Ticker = () => {
-  const [trade, setTrade] = useState<Trade>()
+  useWebSocket({ symbol, socket })
 
-  ws.onmessage = (message: MessageEvent) => {
-    setTrade(JSON.parse(message.data))
-  }
-
-  useEffect(() => {
-    return () => {
-      ws.close()
-    }
-  }, [])
+  const messages = useWebSocketStore((state) => state.messages)
+  const trade: Trade = JSON.parse(messages[messages.length - 1] || '{}')
 
   return (
     <div>
-      <p>Ticker: price={trade?.p}</p>
+      <p>Ticker: price={trade.p}</p>
     </div>
   )
 }

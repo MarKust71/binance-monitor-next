@@ -1,1 +1,1 @@
-export type Trade = Record<string, string>
+export type Trade = Record<string, string | number>

@@ -9,29 +9,36 @@ import { Trades } from '@/components/trades'
 import { Order } from '@/components/order'
 import { Order as OrderType } from '@/components/order/order.types'
 import { Trade } from '@/components/trades/trades.types'
+import useWebSocketStore from '@/stores/websocket.store'
+import { parseTrade } from '@/utils/parse-trade'
 
 const SYMBOL = 'ETHUSDT'
-const ORDER_ID = 1456312
+const ORDER_ID = 1485757
 
 export default function Spot() {
   const [myTrades, setMyTrades] = useState<Trade[]>([])
   const [order, setOrder] = useState<OrderType>({})
 
-  const profit = useMemo(() => {
-    if (!myTrades || !myTrades.length) return
+  const messages = useWebSocketStore((state) => state.messages)
+  const message: Trade = JSON.parse(messages[messages.length - 1] || '{}')
 
-    // const price = parseFloat(trade.p)
-    const price = 3435.58
-    const quantity = parseFloat(myTrades[0].qty)
+  const parsedTrades = useMemo(() => {
+    return myTrades.map((trade) => parseTrade(trade))
+  }, [myTrades])
+
+  const profit = useMemo(() => {
+    if (!parsedTrades || !parsedTrades.length) return
+
+    const price =
+      typeof message.p === 'string' ? parseFloat(message.p) : message.p
+    const quantity = parsedTrades[2].qty
 
     return {
-      profit: (price - parseFloat(myTrades[2].price)) * quantity,
+      profit: (price - parsedTrades[2].price) * quantity,
       profitPercentage:
-        ((price - parseFloat(myTrades[2].price)) /
-          parseFloat(myTrades[2].price)) *
-        100,
+        ((price - parsedTrades[2].price) / parsedTrades[2].price) * 100,
     }
-  }, [myTrades])
+  }, [parsedTrades, message])
 
   useEffect(() => {
     const info = async () => {
@@ -58,7 +65,7 @@ export default function Spot() {
 
       <Ticker />
 
-      <Trades trades={myTrades} />
+      <Trades trades={parsedTrades} />
 
       <Order order={order} />
 
