@@ -53,6 +53,23 @@ export const tradesTableColumns: ColumnDef<ParsedTrade>[] = [
     },
   },
   {
+    id: 'relativeProfit',
+    header: () => <div className={'text-right'}>{'Profit %'}</div>,
+    cell: ({ row }) => {
+      const profit = row.getValue('profit') as number
+      const price = row.getValue('price') as number
+      const qty = row.getValue('qty') as number
+      const isNegative = profit < 0
+      return (
+        <div
+          className={`font-bold text-right ${isNegative ? 'text-red-500' : 'text-green-600'}`}
+        >
+          {((profit / (price * qty)) * 100).toFixed(6)} %
+        </div>
+      )
+    },
+  },
+  {
     accessorKey: 'commission',
     header: 'Commission',
   },

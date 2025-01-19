@@ -1,5 +1,7 @@
 // export type Trade = Record<string, string | number>
 
+import { ParsedTrade } from '@/utils'
+
 export type Trade = {
   E: number
   M: boolean
@@ -10,4 +12,8 @@ export type Trade = {
   q: string
   s: string
   t: number
+}
+
+export type TradesProps = {
+  trades: ParsedTrade[]
 }

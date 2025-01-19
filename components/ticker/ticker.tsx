@@ -1,10 +1,12 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useWebSocketStore } from '@/stores/websocket-store'
-import { useEffect, useMemo } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useTradesStore } from '@/stores/trades-store'
 import { Trade } from '@/components/trades/trades.types'
+import { getTrades } from '@/actions/spot/get-trades'
 
 export const Ticker = () => {
+  const [initPrice, setInitPrice] = useState(0)
   const calculateProfit = useTradesStore((state) => state.calculateProfit)
   const messages = useWebSocketStore((state) => state.messages)
   const trade: Trade = useMemo(
@@ -17,9 +19,19 @@ export const Ticker = () => {
     calculateProfit(price)
   }, [price])
 
+  useEffect(() => {
+    const init = async () => {
+      const trades = await getTrades('ETHUSDT')
+      const price = parseFloat(trades[0].price)
+      setInitPrice(price)
+      calculateProfit(price)
+    }
+    init()
+  }, [])
+
   return (
     <div className={'mb-2'}>
-      <p>Ticker: price = {price}</p>
+      <p>Ticker: price = {price || initPrice}</p>
     </div>
   )
 }
