@@ -6,7 +6,6 @@ import { getMyTrades } from '@/actions/spot/get-my-trades'
 import { getOrder } from '@/actions/spot/get-order'
 import { Ticker } from '@/components/ticker'
 import { Trades } from '@/components/trades'
-import { Trade } from '@/components/trades/trades.types'
 import { ParsedTrade, parseTrade } from '@/utils/parse-trade'
 import { useWebSocket } from '@/hooks/use-websocket'
 import { useTradesStore } from '@/stores/trades-store'
@@ -31,7 +30,7 @@ export default function Spot() {
         (trade: Record<string, string | number>) => parseTrade(trade)
       )
       const orders = await Promise.all(
-        parsedTrades.map((trade: Trade) =>
+        parsedTrades.map((trade: ParsedTrade) =>
           getOrder(trade.symbol as string, { orderId: trade.orderId })
         )
       )
@@ -54,7 +53,9 @@ export default function Spot() {
 
   return (
     <div className={'p-2'}>
-      <h1 className={'mb-2'}>Spot</h1>
+      <h1
+        className={'mb-2 w-full text-xl font-extrabold'}
+      >{`${SYMBOL} Spot`}</h1>
 
       <Ticker />
 

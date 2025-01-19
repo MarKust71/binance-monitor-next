@@ -2,8 +2,7 @@
 import { useWebSocketStore } from '@/stores/websocket-store'
 import { useEffect, useMemo } from 'react'
 import { useTradesStore } from '@/stores/trades-store'
-
-type Trade = Record<string, string>
+import { Trade } from '@/components/trades/trades.types'
 
 export const Ticker = () => {
   const calculateProfit = useTradesStore((state) => state.calculateProfit)
@@ -20,7 +19,7 @@ export const Ticker = () => {
 
   return (
     <div className={'mb-2'}>
-      <p>Ticker: price={price}</p>
+      <p>Ticker: price = {price}</p>
     </div>
   )
 }
