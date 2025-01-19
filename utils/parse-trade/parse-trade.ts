@@ -1,4 +1,4 @@
-import { ParsedTrade } from '@/utils/parse-trade/parse-trade.types'
+import { ParsedTrade } from '@/utils'
 
 export const parseTrade = (
   trade: Record<string, string | number>
@@ -7,8 +7,8 @@ export const parseTrade = (
 
   return {
     symbol: trade.symbol as string,
-    id: trade.id as string,
-    orderId: trade.orderId as string,
+    id: trade.id as number,
+    orderId: trade.orderId as number,
     price:
       typeof trade.price === 'string' ? parseFloat(trade.price) : trade.price,
     qty: typeof trade.qty === 'string' ? parseFloat(trade.qty) : trade.qty,

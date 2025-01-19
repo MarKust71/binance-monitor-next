@@ -11,6 +11,7 @@
   "dependencies": {
     "@binance/connector": "^3.6.0",
     "@binance/futures-connector": "^0.1.6",
+    "@tanstack/react-table": "^8.20.6",
     "binance": "^2.15.2",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
@@ -21,6 +22,7 @@
     "tailwind-merge": "^2.6.0",
     "tailwindcss-animate": "^1.0.7",
     "ws": "^8.18.0",
+    "zukeeper": "^1.0.2",
     "zustand": "^5.0.3"
   },
   "devDependencies": {

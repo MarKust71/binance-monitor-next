@@ -1,7 +1,7 @@
 import { create } from 'zustand'
-import { WebSocketState } from '@/stores/websocket.store.types'
+import { WebSocketState } from './websocket.store.types'
 
-const useWebSocketStore = create<WebSocketState>((set) => ({
+export const useWebSocketStore = create<WebSocketState>((set) => ({
   socket: null,
   messages: [],
   isConnected: false,
@@ -18,5 +18,3 @@ const useWebSocketStore = create<WebSocketState>((set) => ({
     }),
   clearMessages: () => set(() => ({ messages: [] })),
 }))
-
-export default useWebSocketStore

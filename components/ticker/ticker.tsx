@@ -1,20 +1,26 @@
-import { useWebSocket } from '@/hooks/use-websocket'
-import useWebSocketStore from '@/stores/websocket.store'
+/* eslint-disable react-hooks/exhaustive-deps */
+import { useWebSocketStore } from '@/stores/websocket-store'
+import { useEffect, useMemo } from 'react'
+import { useTradesStore } from '@/stores/trades-store'
 
 type Trade = Record<string, string>
 
-const symbol = 'ETHUSDT'
-const socket = '@trade'
-
 export const Ticker = () => {
-  useWebSocket({ symbol, socket })
-
+  const calculateProfit = useTradesStore((state) => state.calculateProfit)
   const messages = useWebSocketStore((state) => state.messages)
-  const trade: Trade = JSON.parse(messages[messages.length - 1] || '{}')
+  const trade: Trade = useMemo(
+    () => JSON.parse(messages[messages.length - 1] || '{}'),
+    [messages]
+  )
+  const price = useMemo(() => parseFloat(trade.p), [trade])
+
+  useEffect(() => {
+    calculateProfit(price)
+  }, [price])
 
   return (
-    <div>
-      <p>Ticker: price={trade.p}</p>
+    <div className={'mb-2'}>
+      <p>Ticker: price={price}</p>
     </div>
   )
 }

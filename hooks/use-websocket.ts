@@ -1,5 +1,6 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect } from 'react'
-import useWebSocketStore from '@/stores/websocket.store'
+import { useWebSocketStore } from '@/stores/websocket-store'
 
 type UseWebSocketParams = {
   symbol: string

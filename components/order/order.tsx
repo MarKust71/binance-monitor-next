@@ -6,9 +6,5 @@ type OrderProps = {
 }
 
 export const Order = ({ order }: OrderProps) => {
-  return (
-    <p style={{ marginBottom: '16px' }}>
-      Order: {JSON.stringify(parseOrder(order))}
-    </p>
-  )
+  return <p className={'mb-2'}>Order: {JSON.stringify(parseOrder(order))}</p>
 }
