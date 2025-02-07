@@ -41,6 +41,11 @@ export const dbTradesTableColumns: ColumnDef<DbTrade>[] = [
     cell: (row) => formatNumber(row.getValue() as number, 4),
   },
   {
+    accessorKey: 'rest_quantity',
+    header: 'Rest',
+    cell: (row) => formatNumber((row.getValue() as number) || 0, 4),
+  },
+  {
     accessorKey: 'atr',
     header: 'ATR',
     cell: (row) => formatNumber(row.getValue() as number),

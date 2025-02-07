@@ -4,6 +4,7 @@ export type DbTrade = {
   symbol: string
   side: string
   quantity: number
+  rest_quantity: number
   price: number
   atr: number
   stop_loss: number
@@ -18,7 +19,16 @@ export type DbTrade = {
   updated_at: string
 }
 
+export type DbTradePagination = {
+  has_next: boolean
+  limit: number
+  offset: number
+  total: number
+}
+
 export type DbTradesState = {
   trades: DbTrade[]
+  pagination: DbTradePagination
   setTrades: (trades: DbTrade[]) => void
+  setPagination: (pagination: DbTradePagination) => void
 }
