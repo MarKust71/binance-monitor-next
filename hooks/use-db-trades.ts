@@ -5,8 +5,8 @@ export const useDbTrades = () => {
   const trades = useDbTradesStore((state) => state.trades)
   const setTrades = useDbTradesStore((state) => state.setTrades)
 
-  const getTrades = async () => {
-    const dbTrades = await getDbTrades()
+  const getTrades = async (offset: number = 0, limit: number = 10) => {
+    const dbTrades = await getDbTrades(offset, limit)
 
     setTrades(dbTrades.data)
   }

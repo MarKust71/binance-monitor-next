@@ -1,10 +1,13 @@
 import { Button } from '@/components/ui/button'
-import { getDbTrades } from '@/actions/spot/get-db-trades'
-import { getTrades } from '@/actions/spot/get-trades'
+import { useDbTrades } from '@/hooks/use-db-trades'
+import { useTrades } from '@/hooks/use-trades'
 
 const SYMBOL = 'ETHUSDT'
 
 export const ReFetchTradesButton = () => {
+  const { getTrades } = useTrades()
+  const { getTrades: getDbTrades } = useDbTrades()
+
   const handleClick = () => {
     getTrades(SYMBOL)
     getDbTrades()

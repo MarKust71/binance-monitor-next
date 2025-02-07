@@ -5,9 +5,13 @@ import { GetDbTrades } from '@/actions/spot/get-db-trades.types'
 
 const API_URL = process.env.NEXT_PUBLIC_MY_API_URL
 
-export const getDbTrades = async (): Promise<GetDbTrades> => {
+export const getDbTrades = async (
+  offset: number = 0,
+  limit: number = 10
+): Promise<GetDbTrades> => {
   try {
-    const response = await axios.get(`${API_URL}/trades`, {
+    const url = `${API_URL}/trades?offset=${offset}&limit=${limit}`
+    const response = await axios.get(url, {
       headers: { 'Content-Type': 'application/json' },
     })
 
