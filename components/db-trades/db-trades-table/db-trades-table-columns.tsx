@@ -1,9 +1,9 @@
 'use client'
 
 import { ColumnDef } from '@tanstack/react-table'
-import { DbTrade } from '@/stores/db-trades-store/db.trades.store.types'
 import { formatDateTime } from '@/utils/format-date-time'
 import { formatNumber } from '@/utils/format-number'
+import { DbTrade } from '@/stores/db-trades-store/db.trades.store.types'
 
 export const dbTradesTableColumns: ColumnDef<DbTrade>[] = [
   {
@@ -69,6 +69,11 @@ export const dbTradesTableColumns: ColumnDef<DbTrade>[] = [
     accessorKey: 'take_profit_partial_price',
     header: 'T/P Part Price',
     cell: (row) => formatNumber(row.getValue() as number),
+  },
+  {
+    accessorKey: 'take_profit_partial_quantity',
+    header: 'T/P Part Qty',
+    cell: (row) => formatNumber(row.getValue() as number, 4),
   },
   {
     accessorKey: 'take_profit_partial_date_time',

@@ -12,6 +12,7 @@ export type DbTrade = {
   close_price: number | null
   take_profit_partial: number
   take_profit_partial_price: number | null
+  take_profit_partial_quantity: number | null
   take_profit_partial_date_time: string | null
   is_closed: boolean
   close_date_time: number | null
