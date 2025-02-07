@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { useTradesStore } from '@/stores/trades-store'
 import { Trade } from '@/components/trades/trades.types'
 import { getTrades } from '@/actions/spot/get-trades'
+import { formatNumber } from '@/utils/format-number'
 
 export const Ticker = () => {
   const [initPrice, setInitPrice] = useState(0)
@@ -31,7 +32,7 @@ export const Ticker = () => {
 
   return (
     <div className={'mb-2'}>
-      <p>Ticker: price = {price || initPrice}</p>
+      <p>Ticker: price = {formatNumber(price || initPrice)}</p>
     </div>
   )
 }

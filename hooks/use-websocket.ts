@@ -7,7 +7,8 @@ type UseWebSocketParams = {
   socket: string
 }
 
-const url = process.env.NEXT_PUBLIC_BINANCE_SPOT_TEST_API_WSS
+const url = process.env.NEXT_PUBLIC_BINANCE_SPOT_API_WSS
+// const url = process.env.NEXT_PUBLIC_BINANCE_SPOT_TEST_API_WSS
 
 export const useWebSocket = ({ symbol, socket }: UseWebSocketParams): void => {
   const setSocket = useWebSocketStore((state) => state.setSocket)

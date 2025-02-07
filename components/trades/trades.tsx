@@ -1,21 +1,13 @@
-import { TradesTable } from './trades-table'
 import { tradesTableColumns } from './trades-table'
-import { Button } from '@/components/ui/button'
 import { TradesProps } from './trades.types'
-import { useTrades } from '@/hooks/use-trades'
-
-const SYMBOL = 'ETHUSDT'
+import { DataTable } from '@/components/data-table'
 
 export const Trades = ({ trades }: TradesProps) => {
-  const { getTrades } = useTrades()
-
   return (
-    <>
-      <div className={'my-2'}>
-        <TradesTable columns={tradesTableColumns} data={trades} />
-      </div>
+    <div className={'my-2'}>
+      <h3 className={'text-lg font-semibold'}>Binance Trades</h3>
 
-      <Button onClick={() => getTrades(SYMBOL)}>Re-fetch trades</Button>
-    </>
+      <DataTable columns={tradesTableColumns} data={trades} />
+    </div>
   )
 }

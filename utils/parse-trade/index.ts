@@ -1,2 +1,2 @@
-export * from './parse-trade'
-export * from './parse-trade.types'
+export * from './parsed-trade'
+export * from './parsed-trade.types'

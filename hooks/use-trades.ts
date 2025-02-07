@@ -9,18 +9,20 @@ export const useTrades = () => {
 
   const getTrades = async (symbol: string) => {
     const myTrades = await getMyTrades(symbol)
-    const parsedTrades = myTrades.map(
-      (trade: Record<string, string | number>) => parseTrade(trade)
-    )
+
+    const parsedTrades = myTrades.map((trade) => parseTrade(trade))
+
     const orders = await Promise.all(
       parsedTrades.map((trade: ParsedTrade) =>
         getOrder(trade.symbol as string, { orderId: trade.orderId })
       )
     )
+
     const sides = orders.map((order) => ({
       orderId: order.orderId,
       side: order.side,
     }))
+
     const parsedTradesWithSides = parsedTrades.map(
       (trade: ParsedTrade, index: number) => ({
         ...trade,
@@ -28,7 +30,7 @@ export const useTrades = () => {
       })
     )
 
-    setTrades(parsedTradesWithSides)
+    setTrades(parsedTradesWithSides as ParsedTrade[])
   }
 
   return { trades, getTrades }
