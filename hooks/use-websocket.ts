@@ -1,6 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect } from 'react'
 import { useWebSocketStore } from '@/stores/websocket-store'
+import { Trade } from '@/components/trades/trades.types'
 
 type UseWebSocketParams = {
   symbol: string
@@ -14,6 +15,7 @@ export const useWebSocket = ({ symbol, socket }: UseWebSocketParams): void => {
   const setSocket = useWebSocketStore((state) => state.setSocket)
   const setConnected = useWebSocketStore((state) => state.setConnected)
   const addMessage = useWebSocketStore((state) => state.addMessage)
+  const setLastPrice = useWebSocketStore((state) => state.setLastPrice)
 
   useEffect(() => {
     const ws = new WebSocket(`${url}/ws/${symbol.toLowerCase()}${socket}`)
@@ -25,6 +27,9 @@ export const useWebSocket = ({ symbol, socket }: UseWebSocketParams): void => {
 
     ws.onmessage = (event: MessageEvent<string>) => {
       addMessage(event.data)
+      const trade: Trade = JSON.parse(event.data)
+      const price = parseFloat(trade.p)
+      setLastPrice(price)
     }
 
     ws.onerror = (error: Event) => {
@@ -42,5 +47,5 @@ export const useWebSocket = ({ symbol, socket }: UseWebSocketParams): void => {
       ws.close() // Zamknięcie połączenia
       setSocket(null)
     }
-  }, [url, setSocket, setConnected, addMessage])
+  }, [url, setSocket, setConnected, addMessage, setLastPrice])
 }

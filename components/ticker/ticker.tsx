@@ -1,24 +1,18 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useWebSocketStore } from '@/stores/websocket-store'
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useTradesStore } from '@/stores/trades-store'
-import { Trade } from '@/components/trades/trades.types'
 import { getTrades } from '@/actions/spot/get-trades'
 import { formatNumber } from '@/utils/format-number'
 
 export const Ticker = () => {
   const [initPrice, setInitPrice] = useState(0)
   const calculateProfit = useTradesStore((state) => state.calculateProfit)
-  const messages = useWebSocketStore((state) => state.messages)
-  const trade: Trade = useMemo(
-    () => JSON.parse(messages[messages.length - 1] || '{}'),
-    [messages]
-  )
-  const price = useMemo(() => parseFloat(trade.p), [trade])
+  const lastPrice = useWebSocketStore((state) => state.lastPrice)
 
   useEffect(() => {
-    calculateProfit(price)
-  }, [price])
+    calculateProfit(lastPrice)
+  }, [lastPrice])
 
   useEffect(() => {
     const init = async () => {
@@ -32,7 +26,7 @@ export const Ticker = () => {
 
   return (
     <div className={'mb-2'}>
-      <p>Ticker: price = {formatNumber(price || initPrice)}</p>
+      <p>Ticker: price = {formatNumber(lastPrice || initPrice)}</p>
     </div>
   )
 }
