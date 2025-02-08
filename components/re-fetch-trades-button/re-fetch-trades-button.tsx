@@ -6,11 +6,11 @@ const SYMBOL = 'ETHUSDT'
 
 export const ReFetchTradesButton = () => {
   const { getTrades } = useTrades()
-  const { getTrades: getDbTrades } = useDbTrades()
+  const { getTrades: getDbTrades, pagination } = useDbTrades()
 
   const handleClick = () => {
     getTrades(SYMBOL)
-    getDbTrades()
+    getDbTrades(pagination.offset, pagination.limit)
   }
 
   return <Button onClick={handleClick}>Re-fetch trades</Button>
