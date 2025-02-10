@@ -4,7 +4,7 @@ import { DataTable } from '@/components/data-table'
 import { useWebSocketStore } from '@/stores/websocket-store'
 import { formatNumber } from '@/utils/format-number'
 import { useMemo } from 'react'
-import { DbTrade } from '@/stores/db-trades-store/db.trades.store.types'
+import { DbSide, DbTrade } from '@/stores/db-trades-store/db.trades.store.types'
 import { CellContext } from '@tanstack/table-core'
 
 export const DbTrades = ({ trades }: DbTradesProps) => {
@@ -17,6 +17,7 @@ export const DbTrades = ({ trades }: DbTradesProps) => {
       cell: (row: CellContext<DbTrade, unknown>) => {
         const priceValue = row.getValue() as number
         const isClosed = row.row.getValue('is_closed') as boolean
+        const side = row.row.getValue('side') as DbSide
         const price = formatNumber(priceValue)
         if (isClosed) {
           return <div>{price}</div>
@@ -24,7 +25,10 @@ export const DbTrades = ({ trades }: DbTradesProps) => {
           return (
             <div
               className={`${
-                lastPrice > priceValue ? 'bg-red-100' : 'bg-green-200'
+                (side === 'sell' && lastPrice > priceValue) ||
+                (side === 'buy' && lastPrice < priceValue)
+                  ? 'bg-red-100'
+                  : 'bg-green-200'
               }`}
             >
               {price}

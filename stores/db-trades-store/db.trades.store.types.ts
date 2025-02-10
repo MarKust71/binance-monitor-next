@@ -1,8 +1,10 @@
+export type DbSide = 'buy' | 'sell'
+
 export type DbTrade = {
   id: number
   date_time: string
   symbol: string
-  side: string
+  side: DbSide
   quantity: number
   rest_quantity: number
   price: number

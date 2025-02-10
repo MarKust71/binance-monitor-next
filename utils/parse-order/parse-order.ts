@@ -1,4 +1,5 @@
 import { ParsedOrder } from '@/utils/parse-order/parse-order.types'
+import { DbSide } from '@/stores/db-trades-store/db.trades.store.types'
 
 export const parseOrder = (
   order: Record<string, string | number>
@@ -25,7 +26,7 @@ export const parseOrder = (
         : order.cummulativeQuoteQty,
     status: order.status as string,
     type: order.type as string,
-    side: order.side as string,
+    side: order.side as DbSide,
     icebergQty:
       typeof order.icebergQty === 'string'
         ? parseFloat(order.icebergQty)

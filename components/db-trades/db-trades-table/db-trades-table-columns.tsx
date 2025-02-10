@@ -3,7 +3,7 @@
 import { ColumnDef } from '@tanstack/react-table'
 import { formatDateTime } from '@/utils/format-date-time'
 import { formatNumber } from '@/utils/format-number'
-import { DbTrade } from '@/stores/db-trades-store/db.trades.store.types'
+import { DbSide, DbTrade } from '@/stores/db-trades-store/db.trades.store.types'
 
 export const dbTradesTableColumns: ColumnDef<DbTrade>[] = [
   {
@@ -22,7 +22,7 @@ export const dbTradesTableColumns: ColumnDef<DbTrade>[] = [
     accessorKey: 'side',
     header: 'Side',
     cell: (row) => {
-      const side = row.getValue() as string
+      const side = row.getValue() as DbSide
       return <div className={'font-bold'}>{side}</div>
     },
   },

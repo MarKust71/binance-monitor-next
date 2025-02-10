@@ -2,6 +2,7 @@
 
 import { ColumnDef } from '@tanstack/react-table'
 import { ParsedTrade } from '@/utils'
+import { DbSide } from '@/stores/db-trades-store/db.trades.store.types'
 
 export const tradesTableColumns: ColumnDef<ParsedTrade>[] = [
   {
@@ -33,7 +34,7 @@ export const tradesTableColumns: ColumnDef<ParsedTrade>[] = [
     accessorKey: 'side',
     header: 'Side',
     cell: (row) => {
-      const side = row.getValue() as string
+      const side = row.getValue() as DbSide
       return <div className={'font-bold'}>{side}</div>
     },
   },
