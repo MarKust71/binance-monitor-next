@@ -5,13 +5,23 @@ import { useTrades } from '@/hooks/use-trades'
 const SYMBOL = 'ETHUSDT'
 
 export const ReFetchTradesButton = () => {
-  const { getTrades } = useTrades()
-  const { getTrades: getDbTrades, pagination } = useDbTrades()
+  const { getTrades, isFetching: isFetchingTrades } = useTrades()
+  const {
+    getTrades: getDbTrades,
+    pagination,
+    isFetching: isFetchingDbTrades,
+  } = useDbTrades()
 
   const handleClick = () => {
     getTrades(SYMBOL)
     getDbTrades(pagination.offset, pagination.limit)
   }
 
-  return <Button onClick={handleClick}>Re-fetch trades</Button>
+  return (
+    <Button onClick={handleClick}>
+      {isFetchingTrades || isFetchingDbTrades
+        ? 'Fetching...'
+        : 'Re - fetch trades'}
+    </Button>
+  )
 }

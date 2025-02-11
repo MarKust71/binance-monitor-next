@@ -12,8 +12,11 @@ export const useDbTradesStore = create<DbTradesState>((set) => ({
     total: 0,
     has_next: false,
   },
+  isFetching: false,
 
   setTrades: (trades) => set(() => ({ trades })),
 
   setPagination: (pagination) => set(() => ({ pagination })),
+
+  setIsFetching: (isFetching) => set(() => ({ isFetching })),
 }))

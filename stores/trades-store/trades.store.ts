@@ -3,6 +3,7 @@ import { TradesState } from './trades.store.types'
 
 export const useTradesStore = create<TradesState>((set) => ({
   trades: [],
+  isFetching: false,
 
   setTrades: (trades) => set(() => ({ trades })),
 
@@ -29,4 +30,6 @@ export const useTradesStore = create<TradesState>((set) => ({
 
       return { trades: recalculatedTrades }
     }),
+
+  setIsFetching: (isFetching) => set(() => ({ isFetching })),
 }))
