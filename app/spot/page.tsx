@@ -55,7 +55,7 @@ export default function Spot() {
             'bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'
           }
         >
-          Previous
+          Newer
         </Button>
         <Button
           disabled={!pagination.has_next}
@@ -63,7 +63,8 @@ export default function Spot() {
             getDbTrades(
               Math.min(
                 pagination.offset + pagination.limit,
-                pagination.total - pagination.limit
+                Math.floor(pagination.total / pagination.limit) *
+                  pagination.limit
               )
             )
           }
@@ -71,7 +72,7 @@ export default function Spot() {
             'bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'
           }
         >
-          Next
+          Older
         </Button>
       </div>
     </div>

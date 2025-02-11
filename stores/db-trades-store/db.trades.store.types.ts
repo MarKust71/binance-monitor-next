@@ -32,6 +32,8 @@ export type DbTradePagination = {
 export type DbTradesState = {
   trades: DbTrade[]
   pagination: DbTradePagination
+  isFetching: boolean
   setTrades: (trades: DbTrade[]) => void
   setPagination: (pagination: DbTradePagination) => void
+  setIsFetching: (isFetching: boolean) => void
 }

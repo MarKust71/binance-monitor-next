@@ -5,10 +5,16 @@ import { getOrder } from '@/actions/spot/get-order'
 
 export const useTrades = () => {
   const trades = useTradesStore((state) => state.trades)
+  const isFetching = useTradesStore((state) => state.isFetching)
+
+  const setIsFetching = useTradesStore((state) => state.setIsFetching)
+
   const setTrades = useTradesStore((state) => state.setTrades)
 
   const getTrades = async (symbol: string) => {
+    setIsFetching(true)
     const myTrades = await getMyTrades(symbol)
+    setIsFetching(false)
 
     const parsedTrades = myTrades.map((trade) => parseTrade(trade))
 
@@ -33,5 +39,5 @@ export const useTrades = () => {
     setTrades(parsedTradesWithSides as ParsedTrade[])
   }
 
-  return { trades, getTrades }
+  return { trades, getTrades, isFetching }
 }
