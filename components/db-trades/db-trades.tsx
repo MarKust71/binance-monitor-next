@@ -18,20 +18,31 @@ export const DbTrades = ({ trades }: DbTradesProps) => {
         const priceValue = row.getValue() as number
         const isClosed = row.row.getValue('is_closed') as boolean
         const side = row.row.getValue('side') as DbSide
+        const stopLoss = row.row.getValue('stop_loss') as number
+        const takeProfit = row.row.getValue('take_profit') as number
         const price = formatNumber(priceValue)
+        const profitPart = Math.round(
+          (side === 'buy'
+            ? (lastPrice - stopLoss) / (takeProfit - stopLoss)
+            : (stopLoss - lastPrice) / (stopLoss - takeProfit)) * 100
+        )
+
         if (isClosed) {
           return <div>{price}</div>
         } else {
           return (
-            <div
-              className={`${
-                (side === 'sell' && lastPrice > priceValue) ||
-                (side === 'buy' && lastPrice < priceValue)
-                  ? 'bg-red-100'
-                  : 'bg-green-200'
-              }`}
-            >
-              {price}
+            <div className={'relative'}>
+              <div className={'absolute flex inset-0 z-0 w-full'}>
+                <div
+                  style={{ width: `${profitPart}%` }}
+                  className={'bg-green-200'}
+                />
+                <div
+                  style={{ width: `${100 - profitPart}%` }}
+                  className={'bg-red-100'}
+                />
+              </div>
+              <div className={'relative z-10'}>{price}</div>
             </div>
           )
         }
