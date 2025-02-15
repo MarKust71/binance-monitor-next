@@ -18,10 +18,13 @@ export const ReFetchTradesButton = () => {
   }
 
   return (
-    <Button onClick={handleClick}>
+    <Button
+      onClick={handleClick}
+      disabled={isFetchingTrades || isFetchingDbTrades}
+    >
       {isFetchingTrades || isFetchingDbTrades
         ? 'Fetching...'
-        : 'Re - fetch trades'}
+        : 'Re-fetch trades'}
     </Button>
   )
 }
