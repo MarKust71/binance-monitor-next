@@ -45,7 +45,17 @@ export default function Spot() {
 
       <DbTrades trades={dbTrades} />
 
-      <div className={'flex justify-between'}>
+      <div className={'flex justify-end gap-1'}>
+        <Button
+          disabled={pagination.offset === 0}
+          onClick={() => getDbTrades(0)}
+          className={
+            'bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'
+          }
+        >
+          {'|<'}
+        </Button>
+
         <Button
           disabled={pagination.offset === 0}
           onClick={() =>
@@ -55,8 +65,9 @@ export default function Spot() {
             'bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'
           }
         >
-          Newer
+          {'<'}
         </Button>
+
         <Button
           disabled={!pagination.has_next}
           onClick={() =>
@@ -72,7 +83,21 @@ export default function Spot() {
             'bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'
           }
         >
-          Older
+          {'>'}
+        </Button>
+
+        <Button
+          disabled={!pagination.has_next}
+          onClick={() =>
+            getDbTrades(
+              Math.floor(pagination.total / pagination.limit) * pagination.limit
+            )
+          }
+          className={
+            'bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'
+          }
+        >
+          {'>|'}
         </Button>
       </div>
     </div>
