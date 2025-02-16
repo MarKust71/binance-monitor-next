@@ -16,7 +16,8 @@ export const DbTrades = ({ trades }: DbTradesProps) => {
       header: () => <div className={'text-left'}>{'Price'}</div>,
       cell: (row: CellContext<DbTrade, unknown>) => {
         const priceValue = row.getValue() as number
-        const isClosed = row.row.getValue('is_closed') as boolean
+        // const isClosed = row.row.getValue('is_closed') as boolean
+        const status = row.row.getValue('status') as string
         const side = row.row.getValue('side') as DbSide
         const stopLoss = row.row.getValue('stop_loss') as number
         const takeProfit = row.row.getValue('take_profit') as number
@@ -27,7 +28,7 @@ export const DbTrades = ({ trades }: DbTradesProps) => {
             : (stopLoss - lastPrice) / (stopLoss - takeProfit)) * 100
         )
 
-        if (isClosed) {
+        if (status === 'closed') {
           return <div>{price}</div>
         } else {
           return (

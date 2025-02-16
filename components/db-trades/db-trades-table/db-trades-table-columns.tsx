@@ -83,13 +83,21 @@ export const dbTradesTableColumns: ColumnDef<DbTrade>[] = [
       return <div>{formatDateTime(date)}</div>
     },
   },
+  // {
+  //   accessorKey: 'is_closed',
+  //   header: 'Is Closed',
+  //   cell: (row) => {
+  //     const isClosed = row.getValue() as boolean
+  //     return <div>{isClosed ? 'Yes' : 'No'}</div>
+  //   },
+  // },
   {
-    accessorKey: 'is_closed',
-    header: 'Is Closed',
-    cell: (row) => {
-      const isClosed = row.getValue() as boolean
-      return <div>{isClosed ? 'Yes' : 'No'}</div>
-    },
+    accessorKey: 'status',
+    header: 'Status',
+    // cell: (row) => {
+    //   const isClosed = row.getValue() as boolean
+    //   return <div>{isClosed ? 'Yes' : 'No'}</div>
+    // },
   },
   {
     accessorKey: 'close_price',
