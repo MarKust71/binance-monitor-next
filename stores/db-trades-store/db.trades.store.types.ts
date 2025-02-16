@@ -1,5 +1,12 @@
 export type DbSide = 'buy' | 'sell'
 
+export type DbTradeStatus =
+  | 'open'
+  | 'closed'
+  | 'partial'
+  | 'take_profit'
+  | 'none'
+
 export type DbTrade = {
   id: number
   date_time: string
@@ -17,6 +24,7 @@ export type DbTrade = {
   take_profit_partial_quantity: number | null
   take_profit_partial_date_time: string | null
   is_closed: boolean
+  status: DbTradeStatus
   close_date_time: number | null
   created_at: string
   updated_at: string
