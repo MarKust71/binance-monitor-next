@@ -37,7 +37,7 @@ export default function Spot() {
     <div className={'p-2'}>
       <h1
         className={
-          'text-xl font-extrabold mb-2 flex flex-row justify-between gap-2'
+          'text-xl font-extrabold mb-2 flex flex-row justify-start gap-2'
         }
       >
         {`${SYMBOL} Spot`}
