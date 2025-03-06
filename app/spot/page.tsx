@@ -4,24 +4,26 @@
 import { useEffect } from 'react'
 import { Ticker } from '@/components/ticker'
 import { Trades } from '@/components/trades'
-import { useWebSocket } from '@/hooks/use-websocket'
+import { useTradeWebsocket } from '@/hooks/use-trade-websocket'
 import { useTrades } from '@/hooks/use-trades'
 import { useDbTrades } from '@/hooks/use-db-trades'
 import { DbTrades } from '@/components/db-trades'
 import { ReFetchTradesButton } from '@/components/re-fetch-trades-button'
 import { Button } from '@/components/ui/button'
+import { useTradeWebSocketStore } from '@/stores/trade-websocket-store'
 
 const SYMBOL = 'ETHUSDT'
 const SOCKET = '@trade'
 
 export default function Spot() {
-  useWebSocket({ symbol: SYMBOL, socket: SOCKET })
+  useTradeWebsocket({ symbol: SYMBOL, socket: SOCKET })
+  const isConnected = useTradeWebSocketStore((state) => state.isConnected)
 
   const { getTrades, trades } = useTrades()
   const { getTrades: getDbTrades, trades: dbTrades, pagination } = useDbTrades()
 
   useEffect(() => {
-    const info = async () => {
+    const info = () => {
       // console.log('account...')
       // const accountInfo = await account()
 
@@ -34,8 +36,18 @@ export default function Spot() {
   return (
     <div className={'p-2'}>
       <h1
-        className={'mb-2 w-full text-xl font-extrabold'}
-      >{`${SYMBOL} Spot`}</h1>
+        className={
+          'text-xl font-extrabold mb-2 flex flex-row justify-between gap-2'
+        }
+      >
+        {`${SYMBOL} Spot`}
+        {isConnected && (
+          <div className={'text-green-500 font-bold text-sm'}>CONNECTED</div>
+        )}
+        {!isConnected && (
+          <div className={'text-red-500 font-bold text-sm'}>DISCONNECTED</div>
+        )}
+      </h1>
 
       <Ticker />
 

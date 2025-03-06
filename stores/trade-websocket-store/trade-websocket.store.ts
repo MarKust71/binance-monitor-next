@@ -1,7 +1,7 @@
 import { create } from 'zustand'
-import { WebSocketState } from './websocket.store.types'
+import { TradeWebSocketState } from './trade-websocket.store.types'
 
-export const useWebSocketStore = create<WebSocketState>((set) => ({
+export const useTradeWebSocketStore = create<TradeWebSocketState>((set) => ({
   socket: null,
   messages: [],
   isConnected: false,

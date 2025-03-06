@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useWebSocketStore } from '@/stores/websocket-store'
+import { useTradeWebSocketStore } from '@/stores/trade-websocket-store'
 import { useEffect, useState } from 'react'
 import { useTradesStore } from '@/stores/trades-store'
 import { getTrades } from '@/actions/spot/get-trades'
@@ -8,7 +8,7 @@ import { formatNumber } from '@/utils/format-number'
 export const Ticker = () => {
   const [initPrice, setInitPrice] = useState(0)
   const calculateProfit = useTradesStore((state) => state.calculateProfit)
-  const lastPrice = useWebSocketStore((state) => state.lastPrice)
+  const lastPrice = useTradeWebSocketStore((state) => state.lastPrice)
 
   useEffect(() => {
     calculateProfit(lastPrice)
