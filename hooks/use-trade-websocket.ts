@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect } from 'react'
-import { useWebSocketStore } from '@/stores/websocket-store'
+import { useTradeWebSocketStore } from '@/stores/trade-websocket-store'
 import { Trade } from '@/components/trades/trades.types'
 
 type UseWebSocketParams = {
@@ -11,11 +11,14 @@ type UseWebSocketParams = {
 const url = process.env.NEXT_PUBLIC_BINANCE_SPOT_API_WSS
 // const url = process.env.NEXT_PUBLIC_BINANCE_SPOT_TEST_API_WSS
 
-export const useWebSocket = ({ symbol, socket }: UseWebSocketParams): void => {
-  const setSocket = useWebSocketStore((state) => state.setSocket)
-  const setConnected = useWebSocketStore((state) => state.setConnected)
-  const addMessage = useWebSocketStore((state) => state.addMessage)
-  const setLastPrice = useWebSocketStore((state) => state.setLastPrice)
+export const useTradeWebsocket = ({
+  symbol,
+  socket,
+}: UseWebSocketParams): void => {
+  const setSocket = useTradeWebSocketStore((state) => state.setSocket)
+  const setConnected = useTradeWebSocketStore((state) => state.setConnected)
+  const addMessage = useTradeWebSocketStore((state) => state.addMessage)
+  const setLastPrice = useTradeWebSocketStore((state) => state.setLastPrice)
 
   useEffect(() => {
     const ws = new WebSocket(`${url}/ws/${symbol.toLowerCase()}${socket}`)

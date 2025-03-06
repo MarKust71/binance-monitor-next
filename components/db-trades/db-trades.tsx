@@ -1,14 +1,14 @@
 import { DbTradesProps } from '@/components/db-trades/db-trades.types'
 import { dbTradesTableColumns } from '@/components/db-trades/db-trades-table'
 import { DataTable } from '@/components/data-table'
-import { useWebSocketStore } from '@/stores/websocket-store'
+import { useTradeWebSocketStore } from '@/stores/trade-websocket-store'
 import { formatNumber } from '@/utils/format-number'
 import { useMemo } from 'react'
 import { DbSide, DbTrade } from '@/stores/db-trades-store/db.trades.store.types'
 import { CellContext } from '@tanstack/table-core'
 
 export const DbTrades = ({ trades }: DbTradesProps) => {
-  const lastPrice = useWebSocketStore((state) => state.lastPrice)
+  const lastPrice = useTradeWebSocketStore((state) => state.lastPrice)
 
   const column = useMemo(
     () => ({
