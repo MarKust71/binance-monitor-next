@@ -3,7 +3,7 @@
 import axios from 'axios'
 import { GetDbTrades } from '@/actions/spot/get-db-trades.types'
 
-const API_URL = process.env.NEXT_PUBLIC_MY_API_URL
+const API_URL = process.env.NEXT_PUBLIC_MY_APP_API_URL
 
 export const getDbTrades = async (
   offset: number = 0,

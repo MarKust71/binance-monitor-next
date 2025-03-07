@@ -11,16 +11,23 @@ import { DbTrades } from '@/components/db-trades'
 import { ReFetchTradesButton } from '@/components/re-fetch-trades-button'
 import { Button } from '@/components/ui/button'
 import { useTradeWebSocketStore } from '@/stores/trade-websocket-store'
+import { useMyAppWebsocket } from '@/hooks/use-my-app-websocket'
 
 const SYMBOL = 'ETHUSDT'
 const SOCKET = '@trade'
 
 export default function Spot() {
   useTradeWebsocket({ symbol: SYMBOL, socket: SOCKET })
+  const { isConnected: isMyAppWebsocketConnected } = useMyAppWebsocket()
+
   const isConnected = useTradeWebSocketStore((state) => state.isConnected)
 
   const { getTrades, trades } = useTrades()
   const { getTrades: getDbTrades, trades: dbTrades, pagination } = useDbTrades()
+
+  useEffect(() => {
+    console.log(`MyAppWebSocket connected: ${isMyAppWebsocketConnected}`)
+  }, [isMyAppWebsocketConnected])
 
   useEffect(() => {
     const info = () => {
