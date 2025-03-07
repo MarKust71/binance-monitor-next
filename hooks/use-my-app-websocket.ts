@@ -14,32 +14,36 @@ export const useMyAppWebsocket = () => {
   const messages = useMyAppWebSocketStore((state) => state.messages)
 
   useEffect(() => {
-    const ws = new WebSocket(url as string)
+    try {
+      const ws = new WebSocket(url as string)
 
-    ws.onopen = () => {
-      console.log('WebSocket connected')
-      setConnected(true)
-    }
+      ws.onopen = () => {
+        console.log('WebSocket connected')
+        setConnected(true)
+      }
 
-    ws.onerror = (error: Event) => {
+      ws.onerror = (error: Event) => {
+        console.error('WebSocket error:', error)
+      }
+
+      ws.onclose = () => {
+        console.log('WebSocket closed')
+        setConnected(false)
+      }
+
+      ws.onmessage = (event: MessageEvent<string>) => {
+        addMessage(event.data)
+        console.log({ message: event.data })
+      }
+
+      setSocket(ws)
+
+      return () => {
+        ws.close() // Zamknięcie połączenia
+        setSocket(null)
+      }
+    } catch (error) {
       console.error('WebSocket error:', error)
-    }
-
-    ws.onclose = () => {
-      console.log('WebSocket closed')
-      setConnected(false)
-    }
-
-    ws.onmessage = (event: MessageEvent<string>) => {
-      addMessage(event.data)
-      console.log({ message: event.data })
-    }
-
-    setSocket(ws)
-
-    return () => {
-      ws.close() // Zamknięcie połączenia
-      setSocket(null)
     }
   }, [url, setSocket, setConnected, addMessage, sendMessage, clearMessages])
 
