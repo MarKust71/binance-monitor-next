@@ -1,4 +1,4 @@
-export type Trade = {
+export type BinanceTrade = {
   id: number
   price: string
   qty: string

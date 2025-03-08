@@ -1,6 +1,6 @@
 import { ParsedTrade } from '@/utils'
 
-export type TradesState = {
+export type BinanceTradesState = {
   trades: ParsedTrade[]
   isFetching: boolean
   setTrades: (trades: ParsedTrade[]) => void

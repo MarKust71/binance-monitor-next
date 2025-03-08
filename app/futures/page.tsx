@@ -1,10 +1,10 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { getAccountInfo } from '@/actions/futures/get-account-info'
-import { getAccountTradeList } from '@/actions/futures/get-account-trade-list'
-import { getAllOrders } from '@/actions/futures/get-all-orders'
-import { getCurrentAllOpenOrders } from '@/actions/futures/get-current-all-open-orders'
+import { getBinanceAccountInfo } from '@/actions/futures/get-binance-account-info'
+import { getBinanceAccountTradeList } from '@/actions/futures/get-binance-account-trade-list'
+import { getBinanceAllOrders } from '@/actions/futures/get-binance-all-orders'
+import { getBinanceCurrentAllOpenOrders } from '@/actions/futures/get-binance-current-all-open-orders'
 
 type Trade = Record<string, string>
 
@@ -32,19 +32,19 @@ export default function Futures() {
   useEffect(() => {
     const info = async () => {
       console.log('getAccountInfo...')
-      const accountInfo = await getAccountInfo()
+      const accountInfo = await getBinanceAccountInfo()
       console.log('getAccountInfo', accountInfo)
 
       console.log('getAccountTradeList...')
-      const tradeList = await getAccountTradeList(symbol)
+      const tradeList = await getBinanceAccountTradeList(symbol)
       console.log('getAccountTradeList', tradeList)
 
       console.log('getAllOrders...')
-      const orders = await getAllOrders(symbol)
+      const orders = await getBinanceAllOrders(symbol)
       console.log('getAllOrders', orders)
 
       console.log('getCurrentAllOpenOrders...')
-      const currentOrders = await getCurrentAllOpenOrders()
+      const currentOrders = await getBinanceCurrentAllOpenOrders()
       console.log('getCurrentAllOpenOrders', currentOrders)
     }
     info()

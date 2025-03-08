@@ -1,7 +1,7 @@
 import { create } from 'zustand'
-import { TradesState } from './trades.store.types'
+import { BinanceTradesState } from './binance-trades.store.types'
 
-export const useTradesStore = create<TradesState>((set) => ({
+export const useBinanceTradesStore = create<BinanceTradesState>((set) => ({
   trades: [],
   isFetching: false,
 

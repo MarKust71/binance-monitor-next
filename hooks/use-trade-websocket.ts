@@ -11,14 +11,13 @@ type UseWebSocketParams = {
 const url = process.env.NEXT_PUBLIC_BINANCE_SPOT_API_WSS
 // const url = process.env.NEXT_PUBLIC_BINANCE_SPOT_TEST_API_WSS
 
-export const useTradeWebsocket = ({
-  symbol,
-  socket,
-}: UseWebSocketParams): void => {
+export const useTradeWebsocket = ({ symbol, socket }: UseWebSocketParams) => {
   const setSocket = useTradeWebSocketStore((state) => state.setSocket)
   const setConnected = useTradeWebSocketStore((state) => state.setConnected)
   const addMessage = useTradeWebSocketStore((state) => state.addMessage)
   const setLastPrice = useTradeWebSocketStore((state) => state.setLastPrice)
+  const isConnected = useTradeWebSocketStore((state) => state.isConnected)
+  const lastPrice = useTradeWebSocketStore((state) => state.lastPrice)
 
   useEffect(() => {
     const ws = new WebSocket(`${url}/ws/${symbol.toLowerCase()}${socket}`)
@@ -51,4 +50,6 @@ export const useTradeWebsocket = ({
       setSocket(null)
     }
   }, [url, setSocket, setConnected, addMessage, setLastPrice])
+
+  return { isConnected, lastPrice }
 }

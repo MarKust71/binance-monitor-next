@@ -1,12 +1,12 @@
 'use server'
 
 import { clientSpot } from '@/api/binance'
-import { Order } from './get-order.types'
+import { BinanceOrder } from './get-binance-order.types'
 
-export const getOrder = async (
+export const getBinanceOrder = async (
   symbol: string,
   options = {}
-): Promise<Order> => {
+): Promise<BinanceOrder> => {
   const response = await clientSpot.getOrder(symbol, options)
 
   return response.data

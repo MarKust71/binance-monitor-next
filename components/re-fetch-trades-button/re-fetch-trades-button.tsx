@@ -1,11 +1,11 @@
 import { Button } from '@/components/ui/button'
 import { useDbTrades } from '@/hooks/use-db-trades'
-import { useTrades } from '@/hooks/use-trades'
+import { useBinanceTrades } from '@/hooks/use-binance-trades'
 
 const SYMBOL = 'ETHUSDT'
 
 export const ReFetchTradesButton = () => {
-  const { getTrades, isFetching: isFetchingTrades } = useTrades()
+  const { getTrades, isFetching: isFetchingTrades } = useBinanceTrades()
   const {
     getTrades: getDbTrades,
     pagination,

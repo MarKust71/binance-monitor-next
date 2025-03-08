@@ -1,4 +1,4 @@
-export type MyTrade = {
+export type BinanceMyTrade = {
   symbol: string // 'BNBBTC'
   id: number // 28457
   orderId: number // 100234

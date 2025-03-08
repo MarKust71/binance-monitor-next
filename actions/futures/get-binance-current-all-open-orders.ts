@@ -2,7 +2,7 @@
 
 import { client } from '@/api/binance'
 
-export const getCurrentAllOpenOrders = async () => {
+export const getBinanceCurrentAllOpenOrders = async () => {
   const response = await client.getCurrentAllOpenOrders()
 
   return response.data

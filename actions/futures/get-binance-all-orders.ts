@@ -2,7 +2,7 @@
 
 import { client } from '@/api/binance'
 
-export const getAllOrders = async (symbol: string) => {
+export const getBinanceAllOrders = async (symbol: string) => {
   try {
     const response = await client.getAllOrders(symbol)
 
