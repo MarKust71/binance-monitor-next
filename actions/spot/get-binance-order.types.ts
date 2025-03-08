@@ -1,4 +1,4 @@
-export type Order = {
+export type BinanceOrder = {
   symbol: string // 'LTCBTC'
   orderId: number // 1
   orderListId: number // -1 // This field will always have a value of -1 if not an order list.

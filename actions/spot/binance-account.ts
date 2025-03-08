@@ -1,9 +1,9 @@
 'use server'
 
 import { clientSpot } from '@/api/binance'
-import { Account } from './account.types'
+import { BinanceAccount } from './binance-account.types'
 
-export const account = async (): Promise<Account> => {
+export const binanceAccount = async (): Promise<BinanceAccount> => {
   const response = await clientSpot.account()
 
   return response.data

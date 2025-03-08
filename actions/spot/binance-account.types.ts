@@ -1,4 +1,4 @@
-export type Account = {
+export type BinanceAccount = {
   makerCommission: number // 15
   takerCommission: number // 15
   buyerCommission: number // 0

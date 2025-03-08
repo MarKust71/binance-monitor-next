@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { DbTradesProps } from '@/components/db-trades/db-trades.types'
 import { dbTradesTableColumns } from '@/components/db-trades/db-trades-table'
 import { DataTable } from '@/components/data-table'
@@ -6,9 +7,11 @@ import { formatNumber } from '@/utils/format-number'
 import { useMemo } from 'react'
 import { DbSide, DbTrade } from '@/stores/db-trades-store/db.trades.store.types'
 import { CellContext } from '@tanstack/table-core'
+import { useDbTrades } from '@/hooks/use-db-trades'
 
 export const DbTrades = ({ trades }: DbTradesProps) => {
   const lastPrice = useTradeWebSocketStore((state) => state.lastPrice)
+  const { getTrades, pagination } = useDbTrades()
 
   const column = useMemo(
     () => ({
@@ -16,11 +19,15 @@ export const DbTrades = ({ trades }: DbTradesProps) => {
       header: () => <div className={'text-left'}>{'Price'}</div>,
       cell: (row: CellContext<DbTrade, unknown>) => {
         const priceValue = row.getValue() as number
-        // const isClosed = row.row.getValue('is_closed') as boolean
         const status = row.row.getValue('status') as string
+        const isClosed = status === 'closed'
+        const isPartial = status === 'partial'
         const side = row.row.getValue('side') as DbSide
         const stopLoss = row.row.getValue('stop_loss') as number
         const takeProfit = row.row.getValue('take_profit') as number
+        const takeProfitPartial = row.row.getValue(
+          'take_profit_partial'
+        ) as number
         const price = formatNumber(priceValue)
         const profitPart = Math.round(
           (side === 'buy'
@@ -28,7 +35,31 @@ export const DbTrades = ({ trades }: DbTradesProps) => {
             : (stopLoss - lastPrice) / (stopLoss - takeProfit)) * 100
         )
 
-        if (status === 'closed') {
+        if (!isClosed) {
+          if (side === 'buy') {
+            if (
+              priceValue <= stopLoss ||
+              priceValue >= takeProfit ||
+              (!isPartial && priceValue >= takeProfitPartial)
+            ) {
+              console.log('Re-fetching trades...')
+              getTrades(pagination.offset, pagination.limit)
+            }
+          }
+
+          if (side === 'sell') {
+            if (
+              priceValue >= stopLoss ||
+              priceValue <= takeProfit ||
+              (!isPartial && priceValue <= takeProfitPartial)
+            ) {
+              console.log('Re-fetching trades...')
+              getTrades(pagination.offset, pagination.limit)
+            }
+          }
+        }
+
+        if (isClosed) {
           return <div>{price}</div>
         } else {
           return (
