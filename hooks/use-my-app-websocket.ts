@@ -1,6 +1,10 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useMyAppWebSocketStore } from '@/stores/my-app-websocket-store'
 import { useEffect } from 'react'
+import { useBinanceTrades } from '@/hooks/use-binance-trades'
+import { useDbTrades } from '@/hooks/use-db-trades'
+
+const SYMBOL = 'ETHUSDT'
 
 const url = process.env.NEXT_PUBLIC_MY_APP_WS_URL
 
@@ -13,6 +17,9 @@ export const useMyAppWebsocket = () => {
   const isConnected = useMyAppWebSocketStore((state) => state.isConnected)
   const messages = useMyAppWebSocketStore((state) => state.messages)
   const socket = useMyAppWebSocketStore((state) => state.socket)
+
+  const { getTrades } = useBinanceTrades()
+  const { getTrades: getDbTrades, pagination } = useDbTrades()
 
   const disconnect = () => {
     console.log('MyApp disconnecting...', socket)
@@ -47,9 +54,16 @@ export const useMyAppWebsocket = () => {
         setConnected(false)
       }
 
-      ws.onmessage = (event: MessageEvent<string>) => {
+      ws.onmessage = async (event: MessageEvent<string>) => {
         addMessage(event.data)
         console.log({ message: event.data })
+
+        const { reason } = JSON.parse(event.data)
+        console.log('Received reason received:', reason)
+        if (reason) {
+          await getTrades(SYMBOL)
+          await getDbTrades(pagination.offset, pagination.limit)
+        }
       }
 
       setSocket(ws)

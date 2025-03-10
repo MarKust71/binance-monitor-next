@@ -51,10 +51,9 @@ export default function Spot() {
       <div className={'flex flex-row items-center justify-start gap-2'}>
         <ReFetchTradesButton />
 
-        {!isTradeWebsocketConnected ||
-          (!isMyAppWebsocketConnected && (
-            <ReConnectWebsocketButton disabled={isTradeWebsocketConnected} />
-          ))}
+        {(!isTradeWebsocketConnected || !isMyAppWebsocketConnected) && (
+          <ReConnectWebsocketButton disabled={isTradeWebsocketConnected} />
+        )}
       </div>
 
       <Trades trades={trades} />
