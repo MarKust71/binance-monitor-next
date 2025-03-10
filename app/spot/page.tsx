@@ -11,29 +11,19 @@ import { DbTrades } from '@/components/db-trades'
 import { ReFetchTradesButton } from '@/components/re-fetch-trades-button'
 import { useMyAppWebsocket } from '@/hooks/use-my-app-websocket'
 import { DbTradesPaginationButtons } from '@/components/db-trades/db-trades-pagination-buttons'
+import { ReConnectWebsocketButton } from '@/components/re-connect-websocket-button'
 
 const SYMBOL = 'ETHUSDT'
-const SOCKET = '@trade'
 
 export default function Spot() {
-  const { isConnected: isTradeWebsocketConnected } = useTradeWebsocket({
-    symbol: SYMBOL,
-    socket: SOCKET,
-  })
+  const { isConnected: isTradeWebsocketConnected } = useTradeWebsocket()
   const { isConnected: isMyAppWebsocketConnected } = useMyAppWebsocket()
 
   const { getTrades, trades } = useBinanceTrades()
   const { getTrades: getDbTrades, trades: dbTrades } = useDbTrades()
 
   useEffect(() => {
-    console.log(`MyAppWebSocket connected: ${isMyAppWebsocketConnected}`)
-  }, [isMyAppWebsocketConnected])
-
-  useEffect(() => {
     const info = () => {
-      // console.log('account...')
-      // const accountInfo = await account()
-
       getTrades(SYMBOL)
       getDbTrades()
     }
@@ -58,7 +48,14 @@ export default function Spot() {
 
       <Ticker />
 
-      <ReFetchTradesButton />
+      <div className={'flex flex-row items-center justify-start gap-2'}>
+        <ReFetchTradesButton />
+
+        {!isTradeWebsocketConnected ||
+          (!isMyAppWebsocketConnected && (
+            <ReConnectWebsocketButton disabled={isTradeWebsocketConnected} />
+          ))}
+      </div>
 
       <Trades trades={trades} />
 

@@ -12,22 +12,38 @@ export const useMyAppWebsocket = () => {
   const clearMessages = useMyAppWebSocketStore((state) => state.clearMessages)
   const isConnected = useMyAppWebSocketStore((state) => state.isConnected)
   const messages = useMyAppWebSocketStore((state) => state.messages)
+  const socket = useMyAppWebSocketStore((state) => state.socket)
 
-  useEffect(() => {
+  const disconnect = () => {
+    console.log('MyApp disconnecting...', socket)
+    if (socket) {
+      socket.close() // Zamknięcie połączenia
+      setSocket(null)
+    }
+  }
+
+  const reconnect = () => {
+    console.log('MyApp reconnecting...')
+    disconnect()
+    connect()
+  }
+
+  const connect = () => {
+    console.log('MyApp connecting...')
     try {
       const ws = new WebSocket(url as string)
 
       ws.onopen = () => {
-        console.log('WebSocket connected')
+        console.log('MyAppWebSocket connected')
         setConnected(true)
       }
 
       ws.onerror = (error: Event) => {
-        console.error('WebSocket error:', error)
+        console.error('MyAppWebSocket error:', error)
       }
 
       ws.onclose = () => {
-        console.log('WebSocket closed')
+        console.log('MyAppWebSocket closed')
         setConnected(false)
       }
 
@@ -37,15 +53,18 @@ export const useMyAppWebsocket = () => {
       }
 
       setSocket(ws)
-
-      return () => {
-        ws.close() // Zamknięcie połączenia
-        setSocket(null)
-      }
     } catch (error) {
-      console.error('WebSocket error:', error)
+      console.error('MyAppWebSocket error:', error)
+    }
+  }
+
+  useEffect(() => {
+    connect()
+
+    return () => {
+      disconnect()
     }
   }, [url, setSocket, setConnected, addMessage, sendMessage, clearMessages])
 
-  return { isConnected, messages }
+  return { isConnected, messages, reconnect }
 }
