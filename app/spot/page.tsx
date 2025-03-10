@@ -9,8 +9,8 @@ import { useBinanceTrades } from '@/hooks/use-binance-trades'
 import { useDbTrades } from '@/hooks/use-db-trades'
 import { DbTrades } from '@/components/db-trades'
 import { ReFetchTradesButton } from '@/components/re-fetch-trades-button'
-import { Button } from '@/components/ui/button'
 import { useMyAppWebsocket } from '@/hooks/use-my-app-websocket'
+import { DbTradesPaginationButtons } from '@/components/db-trades/db-trades-pagination-buttons'
 
 const SYMBOL = 'ETHUSDT'
 const SOCKET = '@trade'
@@ -23,7 +23,7 @@ export default function Spot() {
   const { isConnected: isMyAppWebsocketConnected } = useMyAppWebsocket()
 
   const { getTrades, trades } = useBinanceTrades()
-  const { getTrades: getDbTrades, trades: dbTrades, pagination } = useDbTrades()
+  const { getTrades: getDbTrades, trades: dbTrades } = useDbTrades()
 
   useEffect(() => {
     console.log(`MyAppWebSocket connected: ${isMyAppWebsocketConnected}`)
@@ -64,61 +64,7 @@ export default function Spot() {
 
       <DbTrades trades={dbTrades} />
 
-      <div className={'flex justify-end gap-1'}>
-        <Button
-          disabled={pagination.offset === 0}
-          onClick={() => getDbTrades(0)}
-          className={
-            'bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'
-          }
-        >
-          {'|<'}
-        </Button>
-
-        <Button
-          disabled={pagination.offset === 0}
-          onClick={() =>
-            getDbTrades(Math.max(pagination.offset - pagination.limit, 0))
-          }
-          className={
-            'bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'
-          }
-        >
-          {'<'}
-        </Button>
-
-        <Button
-          disabled={!pagination.has_next}
-          onClick={() =>
-            getDbTrades(
-              Math.min(
-                pagination.offset + pagination.limit,
-                Math.floor(pagination.total / pagination.limit) *
-                  pagination.limit
-              )
-            )
-          }
-          className={
-            'bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'
-          }
-        >
-          {'>'}
-        </Button>
-
-        <Button
-          disabled={!pagination.has_next}
-          onClick={() =>
-            getDbTrades(
-              Math.floor(pagination.total / pagination.limit) * pagination.limit
-            )
-          }
-          className={
-            'bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'
-          }
-        >
-          {'>|'}
-        </Button>
-      </div>
+      <DbTradesPaginationButtons />
     </div>
   )
 }
