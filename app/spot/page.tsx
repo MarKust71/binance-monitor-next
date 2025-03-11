@@ -52,7 +52,9 @@ export default function Spot() {
         <ReFetchTradesButton />
 
         {(!isTradeWebsocketConnected || !isMyAppWebsocketConnected) && (
-          <ReConnectWebsocketButton disabled={isTradeWebsocketConnected} />
+          <ReConnectWebsocketButton
+            disabled={isTradeWebsocketConnected && isMyAppWebsocketConnected}
+          />
         )}
       </div>
 
