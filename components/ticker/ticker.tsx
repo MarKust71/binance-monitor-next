@@ -4,10 +4,12 @@ import { useEffect, useState } from 'react'
 import { getBinanceTrades } from '@/actions/spot/get-binance-trades'
 import { formatNumber } from '@/utils/format-number'
 import { useBinanceTrades } from '@/hooks/use-binance-trades'
+import { formatDateTimeFromTimestamp } from '@/utils/format-date-time'
 
 export const Ticker = () => {
   const [initPrice, setInitPrice] = useState(0)
   const lastPrice = useTradeWebSocketStore((state) => state.lastPrice)
+  const lastTradeTime = useTradeWebSocketStore((state) => state.lastTradeTime)
   const { calculateProfit } = useBinanceTrades()
 
   useEffect(() => {
@@ -26,7 +28,16 @@ export const Ticker = () => {
 
   return (
     <div className={'mb-2'}>
-      <p>Ticker: price = {formatNumber(lastPrice || initPrice)}</p>
+      <p>
+        {`Ticker: price = `}
+        <span className={'font-bold'}>
+          {`${formatNumber(lastPrice || initPrice)} `}
+        </span>
+        {`at `}
+        <span className={'font-bold'}>
+          {`${formatDateTimeFromTimestamp(lastTradeTime)}`}
+        </span>
+      </p>
     </div>
   )
 }

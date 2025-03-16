@@ -4,6 +4,7 @@ export type DbTradeStatus =
   | 'open'
   | 'closed'
   | 'partial'
+  | 'safe'
   | 'take_profit'
   | 'none'
 
@@ -19,6 +20,10 @@ export type DbTrade = {
   stop_loss: number
   take_profit: number
   close_price: number | null
+  take_profit_safe: number
+  take_profit_safe_price: number | null
+  take_profit_safe_quantity: number | null
+  take_profit_safe_date_time: string | null
   take_profit_partial: number
   take_profit_partial_price: number | null
   take_profit_partial_quantity: number | null
