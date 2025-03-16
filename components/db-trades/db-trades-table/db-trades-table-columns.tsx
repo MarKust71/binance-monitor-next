@@ -1,7 +1,7 @@
 'use client'
 
 import { ColumnDef } from '@tanstack/react-table'
-import { formatDateTime } from '@/utils/format-date-time'
+import { formatDateTimeFromUtc } from '@/utils/format-date-time'
 import { formatNumber } from '@/utils/format-number'
 import { DbSide, DbTrade } from '@/stores/db-trades-store/db.trades.store.types'
 
@@ -15,7 +15,7 @@ export const dbTradesTableColumns: ColumnDef<DbTrade>[] = [
     header: 'Open Time',
     cell: (row) => {
       const date = row.getValue() as string
-      return <div>{formatDateTime(date)}</div>
+      return <div>{formatDateTimeFromUtc(date)}</div>
     },
   },
   {
@@ -56,32 +56,61 @@ export const dbTradesTableColumns: ColumnDef<DbTrade>[] = [
     cell: (row) => formatNumber(row.getValue() as number),
   },
   {
-    accessorKey: 'take_profit',
-    header: 'T/P',
+    accessorKey: 'take_profit_partial',
+    header: 'T/P Part',
     cell: (row) => formatNumber(row.getValue() as number),
   },
   {
-    accessorKey: 'take_profit_partial',
-    header: 'T/P Part',
+    accessorKey: 'take_profit_safe',
+    header: 'T/P Safe',
+    cell: (row) => formatNumber(row.getValue() as number),
+  },
+  {
+    accessorKey: 'take_profit',
+    header: 'T/P',
     cell: (row) => formatNumber(row.getValue() as number),
   },
   {
     accessorKey: 'take_profit_partial_price',
     header: 'T/P Part Price',
     cell: (row) => formatNumber(row.getValue() as number),
+    meta: { className: 'bg-yellow-50' },
   },
   {
     accessorKey: 'take_profit_partial_quantity',
     header: 'T/P Part Qty',
     cell: (row) => formatNumber(row.getValue() as number, 4),
+    meta: { className: 'bg-yellow-50' },
   },
   {
     accessorKey: 'take_profit_partial_date_time',
     header: 'T/P Part Time',
     cell: (row) => {
       const date = row.getValue() as string
-      return <div>{formatDateTime(date)}</div>
+      return <div>{formatDateTimeFromUtc(date)}</div>
     },
+    meta: { className: 'bg-yellow-50' },
+  },
+  {
+    accessorKey: 'take_profit_safe_price',
+    header: 'T/P Safe Price',
+    cell: (row) => formatNumber(row.getValue() as number),
+    meta: { className: 'bg-blue-50' },
+  },
+  {
+    accessorKey: 'take_profit_safe_quantity',
+    header: 'T/P Safe Qty',
+    cell: (row) => formatNumber(row.getValue() as number, 4),
+    meta: { className: 'bg-blue-50' },
+  },
+  {
+    accessorKey: 'take_profit_safe_date_time',
+    header: 'T/P Safe Time',
+    cell: (row) => {
+      const date = row.getValue() as string
+      return <div>{formatDateTimeFromUtc(date)}</div>
+    },
+    meta: { className: 'bg-blue-50' },
   },
   // {
   //   accessorKey: 'is_closed',
@@ -109,7 +138,7 @@ export const dbTradesTableColumns: ColumnDef<DbTrade>[] = [
     header: () => <div className={'text-left'}>{'Close Time'}</div>,
     cell: (row) => {
       const date = row.getValue() as string
-      return <div>{formatDateTime(date)}</div>
+      return <div>{formatDateTimeFromUtc(date)}</div>
     },
   },
   {

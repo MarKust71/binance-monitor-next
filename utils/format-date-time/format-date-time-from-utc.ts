@@ -1,4 +1,4 @@
-export const formatDateTime = (utcString: string): string => {
+export const formatDateTimeFromUtc = (utcString: string): string => {
   const date = new Date(utcString) // Parsowanie daty UTC
   return new Intl.DateTimeFormat('pl-PL', {
     year: 'numeric',

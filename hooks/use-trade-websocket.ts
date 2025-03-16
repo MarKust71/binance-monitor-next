@@ -10,13 +10,18 @@ const url = process.env.NEXT_PUBLIC_BINANCE_SPOT_API_WSS
 // const url = process.env.NEXT_PUBLIC_BINANCE_SPOT_TEST_API_WSS
 
 export const useTradeWebsocket = () => {
-  const setSocket = useTradeWebSocketStore((state) => state.setSocket)
-  const setConnected = useTradeWebSocketStore((state) => state.setConnected)
-  const addMessage = useTradeWebSocketStore((state) => state.addMessage)
-  const setLastPrice = useTradeWebSocketStore((state) => state.setLastPrice)
   const isConnected = useTradeWebSocketStore((state) => state.isConnected)
   const lastPrice = useTradeWebSocketStore((state) => state.lastPrice)
   const socket = useTradeWebSocketStore((state) => state.socket)
+  const lastTradeTime = useTradeWebSocketStore((state) => state.socket)
+
+  const addMessage = useTradeWebSocketStore((state) => state.addMessage)
+  const setConnected = useTradeWebSocketStore((state) => state.setConnected)
+  const setLastPrice = useTradeWebSocketStore((state) => state.setLastPrice)
+  const setlastTradeTime = useTradeWebSocketStore(
+    (state) => state.setLastTradeTime
+  )
+  const setSocket = useTradeWebSocketStore((state) => state.setSocket)
 
   const disconnect = () => {
     console.log('Trade disconnecting...', socket)
@@ -53,9 +58,9 @@ export const useTradeWebsocket = () => {
 
       ws.onmessage = (event: MessageEvent<string>) => {
         addMessage(event.data)
-        const trade: Trade = JSON.parse(event.data)
-        const price = parseFloat(trade.p)
-        setLastPrice(price)
+        const { p, T }: Trade = JSON.parse(event.data)
+        setLastPrice(parseFloat(p))
+        setlastTradeTime(T)
       }
 
       setSocket(ws)
@@ -72,5 +77,5 @@ export const useTradeWebsocket = () => {
     }
   }, [url, setSocket, setConnected, addMessage, setLastPrice])
 
-  return { isConnected, lastPrice, reconnect }
+  return { isConnected, lastPrice, lastTradeTime, reconnect }
 }

@@ -59,7 +59,7 @@ export const useMyAppWebsocket = () => {
         console.log({ message: event.data })
 
         const { reason } = JSON.parse(event.data)
-        console.log('Received reason received:', reason)
+        console.log('Received reason:', reason)
         if (reason) {
           await getTrades(SYMBOL)
           await getDbTrades(pagination.offset, pagination.limit)
