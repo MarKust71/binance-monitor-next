@@ -58,11 +58,11 @@ export default function Spot() {
         )}
       </div>
 
-      <Trades trades={trades} />
-
       <DbTrades trades={dbTrades} />
 
       <DbTradesPaginationButtons />
+
+      <Trades trades={trades} />
     </div>
   )
 }
