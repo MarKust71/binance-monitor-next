@@ -12,10 +12,18 @@ import {
 } from '@/stores/db-trades-store/db.trades.store.types'
 import { CellContext } from '@tanstack/table-core'
 import { useDbTrades } from '@/hooks/use-db-trades'
+import { ReFetchTradesButton } from '@/components/re-fetch-trades-button'
+import { ReConnectWebsocketButton } from '@/components/re-connect-websocket-button'
+import { DbTradesPaginationButtons } from '@/components/db-trades/db-trades-pagination-buttons'
+import { useTradeWebsocket } from '@/hooks/use-trade-websocket'
+import { useMyAppWebsocket } from '@/hooks/use-my-app-websocket'
 
 export const DbTrades = ({ trades }: DbTradesProps) => {
+  const { isConnected: isTradeWebsocketConnected } = useTradeWebsocket()
+  const { isConnected: isMyAppWebsocketConnected } = useMyAppWebsocket()
+  const { getDbTrades } = useDbTrades()
+
   const lastPrice = useTradeWebSocketStore((state) => state.lastPrice)
-  const { getTrades, pagination } = useDbTrades()
 
   const column = useMemo(
     () => ({
@@ -50,7 +58,7 @@ export const DbTrades = ({ trades }: DbTradesProps) => {
               (!isSafe && lastPrice >= takeProfitSafe)
             ) {
               console.log('Re-fetching trades...')
-              getTrades(pagination.offset, pagination.limit)
+              getDbTrades({})
             }
           }
 
@@ -70,7 +78,7 @@ export const DbTrades = ({ trades }: DbTradesProps) => {
                 takeProfitSafe,
                 takeProfitPartial,
               })
-              getTrades(pagination.offset, pagination.limit)
+              getDbTrades({})
             }
           }
         }
@@ -108,6 +116,20 @@ export const DbTrades = ({ trades }: DbTradesProps) => {
   return (
     <div className={'my-2'}>
       <h3 className={'text-lg font-semibold'}>DB Trades</h3>
+
+      <div className={'flex flex-row justify-between mb-2'}>
+        <div className={'flex flex-row items-center justify-start gap-2'}>
+          <ReFetchTradesButton />
+
+          {(!isTradeWebsocketConnected || !isMyAppWebsocketConnected) && (
+            <ReConnectWebsocketButton
+              disabled={isTradeWebsocketConnected && isMyAppWebsocketConnected}
+            />
+          )}
+        </div>
+
+        <DbTradesPaginationButtons />
+      </div>
 
       <DataTable columns={columns} data={trades} />
       {/*<pre>{JSON.stringify(trades, null, 2)}</pre>*/}
