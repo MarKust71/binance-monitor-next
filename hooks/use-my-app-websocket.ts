@@ -19,7 +19,7 @@ export const useMyAppWebsocket = () => {
   const socket = useMyAppWebSocketStore((state) => state.socket)
 
   const { getTrades } = useBinanceTrades()
-  const { getTrades: getDbTrades, pagination } = useDbTrades()
+  const { getDbTrades, pagination } = useDbTrades()
 
   const disconnect = () => {
     console.log('MyApp disconnecting...', socket)
@@ -62,7 +62,10 @@ export const useMyAppWebsocket = () => {
         console.log('Received reason:', reason)
         if (reason) {
           await getTrades(SYMBOL)
-          await getDbTrades(pagination.offset, pagination.limit)
+          await getDbTrades({
+            offset: pagination.offset,
+            limit: pagination.limit,
+          })
         }
       }
 

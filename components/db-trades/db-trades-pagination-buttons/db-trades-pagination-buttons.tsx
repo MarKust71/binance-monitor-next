@@ -2,13 +2,13 @@ import { useDbTrades } from '@/hooks/use-db-trades'
 import { DbTradesPaginationButton } from '@/components/db-trades/db-trades-pagination-button'
 
 export const DbTradesPaginationButtons = () => {
-  const { getTrades: getDbTrades, pagination } = useDbTrades()
+  const { getDbTrades, pagination } = useDbTrades()
 
   return (
-    <div className={'flex justify-end gap-1'}>
+    <div className={'w-full flex flex-row justify-end gap-1'}>
       <DbTradesPaginationButton
         disabled={pagination.offset === 0}
-        onClick={() => getDbTrades(0)}
+        onClick={() => getDbTrades({ offset: 0 })}
       >
         {'|<'}
       </DbTradesPaginationButton>
@@ -16,7 +16,9 @@ export const DbTradesPaginationButtons = () => {
       <DbTradesPaginationButton
         disabled={pagination.offset === 0}
         onClick={() =>
-          getDbTrades(Math.max(pagination.offset - pagination.limit, 0))
+          getDbTrades({
+            offset: Math.max(pagination.offset - pagination.limit, 0),
+          })
         }
       >
         {'<'}
@@ -25,12 +27,12 @@ export const DbTradesPaginationButtons = () => {
       <DbTradesPaginationButton
         disabled={!pagination.has_next}
         onClick={() =>
-          getDbTrades(
-            Math.min(
+          getDbTrades({
+            offset: Math.min(
               pagination.offset + pagination.limit,
               Math.floor(pagination.total / pagination.limit) * pagination.limit
-            )
-          )
+            ),
+          })
         }
       >
         {'>'}
@@ -39,9 +41,11 @@ export const DbTradesPaginationButtons = () => {
       <DbTradesPaginationButton
         disabled={!pagination.has_next}
         onClick={() =>
-          getDbTrades(
-            Math.floor(pagination.total / pagination.limit) * pagination.limit
-          )
+          getDbTrades({
+            offset:
+              Math.floor(pagination.total / pagination.limit) *
+              pagination.limit,
+          })
         }
       >
         {'>|'}
