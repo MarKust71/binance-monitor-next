@@ -22,8 +22,8 @@ export const useMyAppWebsocket = () => {
   const { getDbTrades, pagination } = useDbTrades()
 
   const disconnect = () => {
-    console.log('MyApp disconnecting...', socket)
     if (socket) {
+      console.log('MyApp disconnecting...', socket)
       socket.close() // Zamknięcie połączenia
       setSocket(null)
     }

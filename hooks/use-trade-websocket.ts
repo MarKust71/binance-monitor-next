@@ -24,8 +24,8 @@ export const useTradeWebsocket = () => {
   const setSocket = useTradeWebSocketStore((state) => state.setSocket)
 
   const disconnect = () => {
-    console.log('Trade disconnecting...', socket)
     if (socket) {
+      console.log('Trade disconnecting...', socket)
       socket.close() // Zamknięcie połączenia
       setSocket(null)
     }
