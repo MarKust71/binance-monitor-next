@@ -1,5 +1,8 @@
 export const formatDateTimeFromUtc = (utcString: string): string => {
-  const date = new Date(utcString) // Parsowanie daty UTC
+  if (!utcString) return ''
+
+  const date = new Date(utcString.endsWith('Z') ? utcString : `${utcString}Z`)
+
   return new Intl.DateTimeFormat('pl-PL', {
     year: 'numeric',
     month: '2-digit',

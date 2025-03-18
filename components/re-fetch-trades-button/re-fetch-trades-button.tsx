@@ -8,9 +8,9 @@ export const ReFetchTradesButton = () => {
   const { getTrades, isFetching: isFetchingTrades } = useBinanceTrades()
   const { getDbTrades, isFetching: isFetchingDbTrades } = useDbTrades()
 
-  const handleClick = () => {
-    getTrades(SYMBOL)
-    getDbTrades({})
+  const handleClick = async () => {
+    await getTrades(SYMBOL)
+    await getDbTrades({})
   }
 
   return (
