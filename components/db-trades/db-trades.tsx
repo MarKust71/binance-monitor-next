@@ -11,7 +11,6 @@ import {
   DbTradeStatus,
 } from '@/stores/db-trades-store/db.trades.store.types'
 import { CellContext } from '@tanstack/table-core'
-import { useDbTrades } from '@/hooks/use-db-trades'
 import { ReFetchTradesButton } from '@/components/re-fetch-trades-button'
 import { ReConnectWebsocketButton } from '@/components/re-connect-websocket-button'
 import { DbTradesPaginationButtons } from '@/components/db-trades/db-trades-pagination-buttons'
@@ -21,11 +20,10 @@ import { useMyAppWebsocket } from '@/hooks/use-my-app-websocket'
 export const DbTrades = ({ trades }: DbTradesProps) => {
   const { isConnected: isTradeWebsocketConnected } = useTradeWebsocket()
   const { isConnected: isMyAppWebsocketConnected } = useMyAppWebsocket()
-  const { getDbTrades } = useDbTrades()
 
   const lastPrice = useTradeWebSocketStore((state) => state.lastPrice)
 
-  const column = useMemo(
+  const priceColumn = useMemo(
     () => ({
       accessorKey: 'price',
       header: () => <div className={'text-left'}>{'Price'}</div>,
@@ -33,55 +31,15 @@ export const DbTrades = ({ trades }: DbTradesProps) => {
         const priceValue = row.getValue() as number
         const status = row.row.getValue('status') as DbTradeStatus
         const isClosed = status === 'closed'
-        const isPartial = status === 'partial'
-        const isSafe = status === 'safe'
         const side = row.row.getValue('side') as DbSide
         const stopLoss = row.row.getValue('stop_loss') as number
         const takeProfit = row.row.getValue('take_profit') as number
-        const takeProfitPartial = row.row.getValue(
-          'take_profit_partial'
-        ) as number
-        const takeProfitSafe = row.row.getValue('take_profit_safe') as number
         const price = formatNumber(priceValue)
         const profitPart = Math.round(
           (side === 'buy'
             ? (lastPrice - stopLoss) / (takeProfit - stopLoss)
             : (stopLoss - lastPrice) / (stopLoss - takeProfit)) * 100
         )
-
-        if (!isClosed) {
-          if (side === 'buy') {
-            if (
-              lastPrice <= stopLoss ||
-              lastPrice >= takeProfit ||
-              (!isPartial && !isSafe && lastPrice >= takeProfitPartial) ||
-              (!isSafe && lastPrice >= takeProfitSafe)
-            ) {
-              console.log('Re-fetching trades...')
-              getDbTrades({})
-            }
-          }
-
-          if (side === 'sell') {
-            if (
-              lastPrice >= stopLoss ||
-              lastPrice <= takeProfit ||
-              (!isPartial && !isSafe && lastPrice <= takeProfitPartial) ||
-              (!isSafe && lastPrice <= takeProfitSafe)
-            ) {
-              console.log('Re-fetching trades...', {
-                lastPrice,
-                stopLoss,
-                takeProfit,
-                isSafe,
-                isPartial,
-                takeProfitSafe,
-                takeProfitPartial,
-              })
-              getDbTrades({})
-            }
-          }
-        }
 
         if (isClosed) {
           return <div>{price}</div>
@@ -107,11 +65,36 @@ export const DbTrades = ({ trades }: DbTradesProps) => {
     [lastPrice]
   )
 
+  const profitColumn = useMemo(
+    () => ({
+      accessorKey: 'profit',
+      header: () => <div className={'text-right'}>{'Profit'}</div>,
+      cell: (row: CellContext<DbTrade, unknown>) => {
+        const value = row.getValue() as number
+        const rest = row.row.getValue('rest_quantity') as number
+        const openPrice = row.row.getValue('price') as number
+        const side = row.row.getValue('side') as DbSide
+        const profit =
+          value + rest * (side === 'buy' ? 1 : -1) * (lastPrice - openPrice)
+        const isNegative = profit < 0
+        return (
+          <div
+            className={`font-bold text-right ${isNegative ? 'text-red-500' : 'text-green-600'}`}
+          >
+            {formatNumber(profit)}
+          </div>
+        )
+      },
+    }),
+    [lastPrice]
+  )
+
   const columns = useMemo(() => {
     const columns = [...dbTradesTableColumns]
-    columns[4] = column
+    columns[4] = priceColumn
+    columns[21] = profitColumn
     return columns
-  }, [column])
+  }, [priceColumn])
 
   return (
     <div className={'my-2'}>
@@ -132,7 +115,6 @@ export const DbTrades = ({ trades }: DbTradesProps) => {
       </div>
 
       <DataTable columns={columns} data={trades} />
-      {/*<pre>{JSON.stringify(trades, null, 2)}</pre>*/}
     </div>
   )
 }

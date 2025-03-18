@@ -112,21 +112,9 @@ export const dbTradesTableColumns: ColumnDef<DbTrade>[] = [
     },
     meta: { className: 'bg-blue-50' },
   },
-  // {
-  //   accessorKey: 'is_closed',
-  //   header: 'Is Closed',
-  //   cell: (row) => {
-  //     const isClosed = row.getValue() as boolean
-  //     return <div>{isClosed ? 'Yes' : 'No'}</div>
-  //   },
-  // },
   {
     accessorKey: 'status',
     header: 'Status',
-    // cell: (row) => {
-    //   const isClosed = row.getValue() as boolean
-    //   return <div>{isClosed ? 'Yes' : 'No'}</div>
-    // },
   },
   {
     accessorKey: 'close_price',
@@ -151,24 +139,7 @@ export const dbTradesTableColumns: ColumnDef<DbTrade>[] = [
         <div
           className={`font-bold text-right ${isNegative ? 'text-red-500' : 'text-green-600'}`}
         >
-          {value}
-        </div>
-      )
-    },
-  },
-  {
-    id: 'relativeProfit',
-    header: () => <div className={'text-right'}>{'Profit %'}</div>,
-    cell: ({ row }) => {
-      const profit = row.getValue('profit') as number
-      const price = row.getValue('price') as number
-      const value = ((profit / price) * 100).toFixed(2)
-      const isNegative = profit < 0
-      return (
-        <div
-          className={`font-bold text-right ${isNegative ? 'text-red-500' : 'text-green-600'}`}
-        >
-          {value}
+          {formatNumber(value)}
         </div>
       )
     },
