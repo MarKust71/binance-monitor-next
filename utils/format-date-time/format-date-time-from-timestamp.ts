@@ -1,5 +1,6 @@
 export const formatDateTimeFromTimestamp = (timestamp: number): string => {
   const date = new Date(timestamp) // Utworzenie daty na podstawie timestamp (w milisekundach)
+
   return new Intl.DateTimeFormat('pl-PL', {
     year: 'numeric',
     month: '2-digit',
