@@ -3,7 +3,12 @@
 import { ColumnDef } from '@tanstack/react-table'
 import { formatDateTimeFromUtc } from '@/utils/format-date-time'
 import { formatNumber } from '@/utils/format-number'
-import { DbSide, DbTrade } from '@/stores/db-trades-store/db.trades.store.types'
+import {
+  DbSide,
+  DbTrade,
+  DbTradeStatus,
+} from '@/stores/db-trades-store/db.trades.store.types'
+import { numberColor } from '@/utils/number-color'
 
 export const dbTradesTableColumns: ColumnDef<DbTrade>[] = [
   {
@@ -43,7 +48,15 @@ export const dbTradesTableColumns: ColumnDef<DbTrade>[] = [
   {
     accessorKey: 'rest_quantity',
     header: 'Rest',
-    cell: (row) => formatNumber((row.getValue() as number) || 0, 4),
+    cell: (row) => {
+      const value = row.getValue() as number
+
+      if (value) {
+        return formatNumber(value, 4)
+      }
+
+      return null
+    },
   },
   {
     accessorKey: 'atr',
@@ -52,8 +65,34 @@ export const dbTradesTableColumns: ColumnDef<DbTrade>[] = [
   },
   {
     accessorKey: 'stop_loss',
-    header: 'S/L',
-    cell: (row) => formatNumber(row.getValue() as number),
+    header: () => (
+      <div className={'flex flex-col justify-start items-start'}>
+        <div>{'S/L'}</div>
+        <div className={`text-xs/[1]`}>{'profit on S/L'}</div>
+      </div>
+    ),
+    cell: (row) => {
+      const value = row.getValue() as number
+      const price = row.row.getValue('price') as number
+      const side = row.row.getValue('side') as DbSide
+      const rest = row.row.getValue('rest_quantity') as number
+      const profit = row.row.getValue('profit') as number
+      const isOpen = (row.row.getValue('status') as DbTradeStatus) != 'closed'
+      const factor = side === 'buy' ? 1 : -1
+      const marginProfit =
+        Math.round((value - price) * rest * factor * 100) / 100 + profit
+
+      return (
+        <div className={'flex flex-col justify-start items-center'}>
+          <div>{formatNumber(value)}</div>
+          {isOpen && (
+            <div className={`text-xs/[1] ${numberColor(marginProfit)}`}>
+              {formatNumber(marginProfit, undefined, true)}
+            </div>
+          )}
+        </div>
+      )
+    },
   },
   {
     accessorKey: 'take_profit_partial',
@@ -73,13 +112,29 @@ export const dbTradesTableColumns: ColumnDef<DbTrade>[] = [
   {
     accessorKey: 'take_profit_partial_price',
     header: 'T/P Part Price',
-    cell: (row) => formatNumber(row.getValue() as number),
+    cell: (row) => {
+      const value = row.getValue() as number
+
+      if (value) {
+        return formatNumber(value, 2)
+      }
+
+      return null
+    },
     meta: { className: 'bg-yellow-50' },
   },
   {
     accessorKey: 'take_profit_partial_quantity',
     header: 'T/P Part Qty',
-    cell: (row) => formatNumber(row.getValue() as number, 4),
+    cell: (row) => {
+      const value = row.getValue() as number
+
+      if (value) {
+        return formatNumber(value, 4)
+      }
+
+      return null
+    },
     meta: { className: 'bg-yellow-50' },
   },
   {
@@ -94,13 +149,29 @@ export const dbTradesTableColumns: ColumnDef<DbTrade>[] = [
   {
     accessorKey: 'take_profit_safe_price',
     header: 'T/P Safe Price',
-    cell: (row) => formatNumber(row.getValue() as number),
+    cell: (row) => {
+      const value = row.getValue() as number
+
+      if (value) {
+        return formatNumber(value, 2)
+      }
+
+      return null
+    },
     meta: { className: 'bg-blue-50' },
   },
   {
     accessorKey: 'take_profit_safe_quantity',
     header: 'T/P Safe Qty',
-    cell: (row) => formatNumber(row.getValue() as number, 4),
+    cell: (row) => {
+      const value = row.getValue() as number
+
+      if (value) {
+        return formatNumber(value, 4)
+      }
+
+      return null
+    },
     meta: { className: 'bg-blue-50' },
   },
   {
@@ -119,7 +190,15 @@ export const dbTradesTableColumns: ColumnDef<DbTrade>[] = [
   {
     accessorKey: 'close_price',
     header: () => <div className={'text-left'}>{'Close Price'}</div>,
-    cell: (row) => formatNumber(row.getValue() as number),
+    cell: (row) => {
+      const value = row.getValue() as number
+
+      if (value) {
+        return formatNumber(value, 2)
+      }
+
+      return null
+    },
   },
   {
     accessorKey: 'close_date_time',
@@ -135,6 +214,7 @@ export const dbTradesTableColumns: ColumnDef<DbTrade>[] = [
     cell: (row) => {
       const value = row.getValue() as number
       const isNegative = value < 0
+
       return (
         <div
           className={`font-bold text-right ${isNegative ? 'text-red-500' : 'text-green-600'}`}
