@@ -84,7 +84,9 @@ export const dbTradesTableColumns: ColumnDef<DbTrade>[] = [
 
       return (
         <div className={'flex flex-col justify-start items-center'}>
-          <div>{formatNumber(value)}</div>
+          <div className={!isOpen ? 'text-gray-400' : ''}>
+            {formatNumber(value)}
+          </div>
           {isOpen && (
             <div className={`text-xs/[1] ${numberColor(marginProfit)}`}>
               {formatNumber(marginProfit, undefined, true)}
@@ -97,17 +99,58 @@ export const dbTradesTableColumns: ColumnDef<DbTrade>[] = [
   {
     accessorKey: 'take_profit_partial',
     header: 'T/P Part',
-    cell: (row) => formatNumber(row.getValue() as number),
+    cell: (row) => {
+      const value = row.getValue() as number
+      const take_profit_partial_price = row.row.getValue(
+        'take_profit_partial_price'
+      ) as number
+      const isClosed =
+        (row.row.getValue('status') as DbTradeStatus) === 'closed'
+      return (
+        <span
+          className={
+            !!take_profit_partial_price || isClosed ? 'text-gray-400' : ''
+          }
+        >
+          {formatNumber(value, 2)}
+        </span>
+      )
+    },
   },
   {
     accessorKey: 'take_profit_safe',
     header: 'T/P Safe',
-    cell: (row) => formatNumber(row.getValue() as number),
+    cell: (row) => {
+      const value = row.getValue() as number
+      const take_profit_safe_price = row.row.getValue(
+        'take_profit_safe_price'
+      ) as number
+      const isClosed =
+        (row.row.getValue('status') as DbTradeStatus) === 'closed'
+      return (
+        <span
+          className={
+            !!take_profit_safe_price || isClosed ? 'text-gray-400' : ''
+          }
+        >
+          {formatNumber(value, 2)}
+        </span>
+      )
+    },
   },
   {
     accessorKey: 'take_profit',
     header: 'T/P',
-    cell: (row) => formatNumber(row.getValue() as number),
+    cell: (row) => {
+      const value = row.getValue() as number
+      const isClosed =
+        (row.row.getValue('status') as DbTradeStatus) === 'closed'
+      return (
+        <span className={isClosed ? 'text-gray-400' : ''}>
+          {formatNumber(value, 2)}
+        </span>
+      )
+    },
   },
   {
     accessorKey: 'take_profit_partial_price',
