@@ -1,4 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
+'use client'
+
 import { DbTradesProps } from '@/components/db-trades/db-trades.types'
 import { dbTradesTableColumns } from '@/components/db-trades/db-trades-table'
 import { DataTable } from '@/components/data-table'
@@ -16,10 +18,32 @@ import { ReConnectWebsocketButton } from '@/components/re-connect-websocket-butt
 import { DbTradesPaginationButtons } from '@/components/db-trades/db-trades-pagination-buttons'
 import { useTradeWebsocket } from '@/hooks/use-trade-websocket'
 import { useMyAppWebsocket } from '@/hooks/use-my-app-websocket'
+import {
+  DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu'
+import { Button } from '@/components/ui/button'
+import { useDbTrades } from '@/hooks/use-db-trades'
+
+const statuses: DbTradeStatus[] = [
+  'open',
+  'partial',
+  'safe',
+  'take_profit',
+  'closed',
+  'none',
+]
 
 export const DbTrades = ({ trades }: DbTradesProps) => {
   const { isConnected: isTradeWebsocketConnected } = useTradeWebsocket()
   const { isConnected: isMyAppWebsocketConnected } = useMyAppWebsocket()
+
+  const {
+    queryParams: { excludeStatuses },
+    setQueryParams,
+  } = useDbTrades()
 
   const lastPrice = useTradeWebSocketStore((state) => state.lastPrice)
 
@@ -96,6 +120,30 @@ export const DbTrades = ({ trades }: DbTradesProps) => {
     return columns
   }, [priceColumn])
 
+  const toggleIncludeStatus = ({
+    status,
+    value,
+  }: {
+    status: DbTradeStatus
+    value: boolean
+  }) => {
+    if (!excludeStatuses) return
+
+    let newExcludeStatuses = [...excludeStatuses]
+
+    if (value) {
+      // Chcemy **uwzględnić** ten status => usuwamy go z wykluczonych
+      newExcludeStatuses = newExcludeStatuses.filter((s) => s !== status)
+    } else {
+      // Chcemy **wykluczyć** ten status => dodajemy go, jeśli jeszcze go nie ma
+      if (!newExcludeStatuses.includes(status)) {
+        newExcludeStatuses.push(status)
+      }
+    }
+
+    setQueryParams({ excludeStatuses: newExcludeStatuses })
+  }
+
   return (
     <div className={'my-2'}>
       <h3 className={'text-lg font-semibold'}>DB Trades</h3>
@@ -111,7 +159,33 @@ export const DbTrades = ({ trades }: DbTradesProps) => {
           )}
         </div>
 
-        <DbTradesPaginationButtons />
+        <div className={'w-full flex flex-row justify-end gap-4'}>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline" className="ml-auto">
+                Included statuses
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              {statuses.map((status) => {
+                return (
+                  <DropdownMenuCheckboxItem
+                    key={status}
+                    className=""
+                    checked={!excludeStatuses?.includes(status)}
+                    onCheckedChange={(value) =>
+                      toggleIncludeStatus({ status, value })
+                    }
+                  >
+                    {status}
+                  </DropdownMenuCheckboxItem>
+                )
+              })}
+            </DropdownMenuContent>
+          </DropdownMenu>
+
+          {trades && <DbTradesPaginationButtons />}
+        </div>
       </div>
 
       <DataTable columns={columns} data={trades} />

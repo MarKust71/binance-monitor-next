@@ -3,7 +3,7 @@ import {
   DbTradePagination,
 } from '@/stores/db-trades-store/db.trades.store.types'
 
-export type GetDbTrades = {
+export type FetchDbTrades = {
   data: DbTrade[]
   pagination: DbTradePagination
 }

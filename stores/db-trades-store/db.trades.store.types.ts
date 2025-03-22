@@ -42,11 +42,17 @@ export type DbTradePagination = {
   total: number
 }
 
+export type DbTradeQueryParams = {
+  excludeStatuses?: DbTradeStatus[]
+}
+
 export type DbTradesState = {
   trades: DbTrade[]
   pagination: DbTradePagination
   isFetching: boolean
+  queryParams: Partial<DbTradeQueryParams>
   setTrades: (trades: DbTrade[]) => void
   setPagination: (pagination: DbTradePagination) => void
   setIsFetching: (isFetching: boolean) => void
+  setQueryParams: (queryParams: Partial<DbTradeQueryParams>) => void
 }

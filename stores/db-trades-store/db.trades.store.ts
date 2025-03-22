@@ -13,10 +13,15 @@ export const useDbTradesStore = create<DbTradesState>((set) => ({
     has_next: false,
   },
   isFetching: false,
+  queryParams: {
+    excludeStatuses: [],
+  },
 
   setTrades: (trades) => set(() => ({ trades })),
 
   setPagination: (pagination) => set(() => ({ pagination })),
 
   setIsFetching: (isFetching) => set(() => ({ isFetching })),
+
+  setQueryParams: (queryParams) => set(() => ({ queryParams })),
 }))

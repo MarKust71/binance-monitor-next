@@ -5,7 +5,7 @@ export const DbTradesPaginationButtons = () => {
   const { getDbTrades, pagination } = useDbTrades()
 
   return (
-    <div className={'w-full flex flex-row justify-end gap-1'}>
+    <div className={'flex flex-row justify-end gap-1'}>
       <DbTradesPaginationButton
         disabled={pagination.offset === 0}
         onClick={() => getDbTrades({ offset: 0 })}
