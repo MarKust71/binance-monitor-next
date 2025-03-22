@@ -8,6 +8,15 @@ export type DbTradeStatus =
   | 'take_profit'
   | 'none'
 
+export const dbTradeStatuses: DbTradeStatus[] = [
+  'open',
+  'partial',
+  'safe',
+  'take_profit',
+  'closed',
+  'none',
+]
+
 export type DbTrade = {
   id: number
   date_time: string
