@@ -1,12 +1,11 @@
-import { DbTradeStatus } from '@/stores/db-trades-store/db.trades.store.types'
-
-export type ExcludeStatusesDropdownProps = {
-  excludeStatuses: DbTradeStatus[]
-  toggleIncludeStatus: ({
-    status,
-    value,
-  }: {
-    status: DbTradeStatus
-    value: boolean
-  }) => void
-}
+// export type ExcludeStatusesDropdownProps = {
+//   TODO: find out why this doesn't work
+//   excludeStatuses: DbTradeStatus[]
+//   toggleIncludeStatus: ({
+//     status,
+//     value,
+//   }: {
+//     status: DbTradeStatus
+//     value: boolean
+//   }) => void
+// }
