@@ -32,5 +32,12 @@ export const useDbTrades = () => {
     }
   }
 
-  return { trades, getDbTrades, pagination, isFetching }
+  return {
+    trades,
+    getDbTrades,
+    pagination,
+    isFetching,
+    queryParams,
+    setQueryParams,
+  }
 }
