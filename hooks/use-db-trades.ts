@@ -1,6 +1,8 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useDbTradesStore } from '@/stores/db-trades-store'
 import { fetchDbTrades } from '@/actions/spot/fetch-db-trades'
 import { GetDbTradesParams } from './use-db-trades.types'
+import { useEffect } from 'react'
 
 export const useDbTrades = () => {
   const trades = useDbTradesStore((state) => state.trades)
@@ -31,6 +33,14 @@ export const useDbTrades = () => {
       setQueryParams(customQueryParams ?? queryParams)
     }
   }
+
+  useEffect(() => {
+    getDbTrades({
+      offset: pagination.offset,
+      limit: pagination.limit,
+      customQueryParams: queryParams,
+    })
+  }, [queryParams])
 
   return {
     trades,
