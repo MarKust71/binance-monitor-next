@@ -17,6 +17,10 @@ export const useMyAppWebsocket = () => {
   const isConnected = useMyAppWebSocketStore((state) => state.isConnected)
   const messages = useMyAppWebSocketStore((state) => state.messages)
   const socket = useMyAppWebSocketStore((state) => state.socket)
+  const isConnecting = useMyAppWebSocketStore((state) => state.isConnecting)
+  const setIsConnecting = useMyAppWebSocketStore(
+    (state) => state.setIsConnecting
+  )
 
   const { getTrades } = useBinanceTrades()
   const { getDbTrades, pagination } = useDbTrades()
@@ -30,9 +34,11 @@ export const useMyAppWebsocket = () => {
   }
 
   const reconnect = () => {
+    setIsConnecting(true)
     console.log('MyApp reconnecting...')
     disconnect()
     connect()
+    setIsConnecting(false)
   }
 
   const connect = () => {
@@ -83,5 +89,5 @@ export const useMyAppWebsocket = () => {
     }
   }, [url, setSocket, setConnected, addMessage, sendMessage, clearMessages])
 
-  return { isConnected, messages, reconnect }
+  return { isConnected, messages, reconnect, isConnecting }
 }

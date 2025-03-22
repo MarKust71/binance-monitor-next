@@ -12,4 +12,6 @@ export type TradeWebSocketState = {
   setLastTradeTime: (time: number) => void // Ustawienie czsu ostatniego trade'u
   sendMessage: (message: string) => void // Funkcja do wysyłania wiadomości
   clearMessages: () => void // Czyszczenie wiadomości
+  isConnecting: boolean // Status łączenia
+  setIsConnecting: (status: boolean) => void // Ustawienie statusu łączenia
 }

@@ -5,6 +5,7 @@ export const useMyAppWebSocketStore = create<MyAppWebSocketState>((set) => ({
   socket: null,
   messages: [],
   isConnected: false,
+  isConnecting: false,
 
   addMessage: (message) =>
     set((state) => ({ messages: [...state.messages, message] })),
@@ -22,4 +23,6 @@ export const useMyAppWebSocketStore = create<MyAppWebSocketState>((set) => ({
     }),
 
   clearMessages: () => set(() => ({ messages: [] })),
+
+  setIsConnecting: (status) => set(() => ({ isConnected: status })),
 }))

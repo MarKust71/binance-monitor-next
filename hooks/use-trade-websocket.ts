@@ -22,6 +22,10 @@ export const useTradeWebsocket = () => {
     (state) => state.setLastTradeTime
   )
   const setSocket = useTradeWebSocketStore((state) => state.setSocket)
+  const isConnecting = useTradeWebSocketStore((state) => state.isConnecting)
+  const setIsConnecting = useTradeWebSocketStore(
+    (state) => state.setIsConnecting
+  )
 
   const disconnect = () => {
     if (socket) {
@@ -32,9 +36,11 @@ export const useTradeWebsocket = () => {
   }
 
   const reconnect = () => {
+    setIsConnecting(true)
     console.log('Trade reconnecting...')
     disconnect()
     connect()
+    setIsConnecting(false)
   }
 
   const connect = () => {
@@ -77,5 +83,5 @@ export const useTradeWebsocket = () => {
     }
   }, [url, setSocket, setConnected, addMessage, setLastPrice])
 
-  return { isConnected, lastPrice, lastTradeTime, reconnect }
+  return { isConnected, lastPrice, lastTradeTime, reconnect, isConnecting }
 }
