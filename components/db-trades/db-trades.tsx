@@ -6,7 +6,7 @@ import { dbTradesTableColumns } from '@/components/db-trades/db-trades-table'
 import { DataTable } from '@/components/data-table'
 import { useTradeWebSocketStore } from '@/stores/trade-websocket-store'
 import { formatNumber } from '@/utils/format-number'
-import { useEffect, useMemo } from 'react'
+import { useMemo } from 'react'
 import {
   DbSide,
   DbTrade,
