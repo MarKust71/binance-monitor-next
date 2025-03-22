@@ -111,7 +111,7 @@ export const DbTrades = ({ trades }: DbTradesProps) => {
           )}
         </div>
 
-        <DbTradesPaginationButtons />
+        {trades && <DbTradesPaginationButtons />}
       </div>
 
       <DataTable columns={columns} data={trades} />
