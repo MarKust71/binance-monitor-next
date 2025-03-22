@@ -7,6 +7,7 @@ export const useTradeWebSocketStore = create<TradeWebSocketState>((set) => ({
   isConnected: false,
   lastPrice: 0,
   lastTradeTime: 0,
+  isConnecting: false,
 
   addMessage: (message) =>
     set((state) => ({ messages: [...state.messages, message] })),
@@ -28,4 +29,6 @@ export const useTradeWebSocketStore = create<TradeWebSocketState>((set) => ({
     }),
 
   clearMessages: () => set(() => ({ messages: [] })),
+
+  setIsConnecting: (status) => set(() => ({ isConnecting: status })),
 }))
