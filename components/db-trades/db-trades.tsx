@@ -12,7 +12,7 @@ import { useTradeWebsocket } from '@/hooks/use-trade-websocket'
 import { useMyAppWebsocket } from '@/hooks/use-my-app-websocket'
 import { priceColumn } from '@/components/db-trades/custom-columns/price-column'
 import { profitColumn } from '@/components/db-trades/custom-columns/profit-column'
-import { ExcludeStatusesDropdown } from '@/components/db-trades/exclude-statuses-dropdown-menu'
+import { HideClosed } from '@/components/db-trades/exclude-statuses-dropdown-menu/hide-closed'
 
 export const DbTrades = ({ trades }: DbTradesProps) => {
   const { isConnected: isTradeWebsocketConnected } = useTradeWebsocket()
@@ -42,11 +42,14 @@ export const DbTrades = ({ trades }: DbTradesProps) => {
           )}
         </div>
 
-        <div className={'w-full flex flex-row justify-end gap-4'}>
-          <ExcludeStatusesDropdown />
+        {trades && (
+          <div className={'w-full flex flex-row justify-end gap-4'}>
+            {/*<ExcludeStatusesDropdown />*/}
+            <HideClosed />
 
-          {trades && <DbTradesPaginationButtons />}
-        </div>
+            <DbTradesPaginationButtons />
+          </div>
+        )}
       </div>
 
       <DataTable columns={columns} data={trades} />

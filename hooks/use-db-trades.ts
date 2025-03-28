@@ -42,6 +42,10 @@ export const useDbTrades = () => {
     })
   }, [queryParams])
 
+  // useEffect(() => {
+  //   console.log({ isFetching })
+  // }, [isFetching])
+
   return {
     trades,
     getDbTrades,

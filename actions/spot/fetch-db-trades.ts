@@ -13,6 +13,7 @@ export const fetchDbTrades = async (
   queryParams: Partial<DbTradeQueryParams>
 ): Promise<FetchDbTrades> => {
   const excludeStatusesArray = queryParams.excludeStatuses
+
   try {
     const url = `${API_URL}/trades?offset=${offset}&limit=${limit}${excludeStatusesArray?.map((status) => `&exclude_status=${status}`).join('')}`
     const response = await axios.get(url, {

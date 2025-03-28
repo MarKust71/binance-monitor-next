@@ -23,7 +23,7 @@ export const useMyAppWebsocket = () => {
   )
 
   const { getTrades } = useBinanceTrades()
-  const { getDbTrades, pagination } = useDbTrades()
+  const { getDbTrades, isFetching } = useDbTrades()
 
   const disconnect = () => {
     if (socket) {
@@ -65,12 +65,12 @@ export const useMyAppWebsocket = () => {
         console.log({ message: event.data })
 
         const { reason } = JSON.parse(event.data)
-        console.log('Received reason:', reason)
-        if (reason) {
+        console.log(`Received reason: ${reason} | isFetching: ${isFetching}`)
+        if (!isFetching && reason) {
           await getTrades(SYMBOL)
           await getDbTrades({
-            offset: pagination.offset,
-            limit: pagination.limit,
+            // offset: pagination.offset,
+            // limit: pagination.limit,
           })
         }
       }
