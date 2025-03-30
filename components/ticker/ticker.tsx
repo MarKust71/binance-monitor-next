@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useTradeWebSocketStore } from '@/stores/trade-websocket-store'
+import { useBinanceTradeWebSocketStore } from '@/stores/binance-trade-websocket-store'
 import { useEffect, useState } from 'react'
 import { getBinanceTrades } from '@/actions/spot/get-binance-trades'
 import { formatNumber } from '@/utils/format-number'
@@ -8,8 +8,10 @@ import { formatDateTimeFromTimestamp } from '@/utils/format-date-time'
 
 export const Ticker = () => {
   const [initPrice, setInitPrice] = useState(0)
-  const lastPrice = useTradeWebSocketStore((state) => state.lastPrice)
-  const lastTradeTime = useTradeWebSocketStore((state) => state.lastTradeTime)
+  const lastPrice = useBinanceTradeWebSocketStore((state) => state.lastPrice)
+  const lastTradeTime = useBinanceTradeWebSocketStore(
+    (state) => state.lastTradeTime
+  )
   const { calculateProfit } = useBinanceTrades()
 
   useEffect(() => {

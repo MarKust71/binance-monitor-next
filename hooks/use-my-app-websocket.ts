@@ -68,10 +68,7 @@ export const useMyAppWebsocket = () => {
         console.log(`Received reason: ${reason} | isFetching: ${isFetching}`)
         if (!isFetching && reason) {
           await getTrades(SYMBOL)
-          await getDbTrades({
-            // offset: pagination.offset,
-            // limit: pagination.limit,
-          })
+          await getDbTrades({})
         }
       }
 

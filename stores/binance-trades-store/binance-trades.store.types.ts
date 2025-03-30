@@ -1,10 +1,10 @@
-import { ParsedTrade } from '@/utils'
+import { ParsedBinanceTrade } from '@/utils'
 
 export type BinanceTradesState = {
-  trades: ParsedTrade[]
+  trades: ParsedBinanceTrade[]
   isFetching: boolean
-  setTrades: (trades: ParsedTrade[]) => void
-  addTrade: (trade: ParsedTrade) => void
+  setTrades: (trades: ParsedBinanceTrade[]) => void
+  addTrade: (trade: ParsedBinanceTrade) => void
   removeTrade: (tradeId: number) => void
   clearTrades: () => void
   calculateProfit: (price: number) => void

@@ -1,8 +1,6 @@
-// export type Trade = Record<string, string | number>
+import { ParsedBinanceTrade } from '@/utils'
 
-import { ParsedTrade } from '@/utils'
-
-export type Trade = {
+export type BinanceTrade = {
   E: number // Event time
   M: boolean // Ignore
   T: number // Trade time
@@ -14,6 +12,6 @@ export type Trade = {
   t: number // Trade ID
 }
 
-export type TradesProps = {
-  trades: ParsedTrade[]
+export type BinanceTradesProps = {
+  trades: ParsedBinanceTrade[]
 }

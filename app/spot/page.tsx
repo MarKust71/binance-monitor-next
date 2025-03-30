@@ -1,10 +1,8 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 'use client'
 
-import { useEffect } from 'react'
 import { Ticker } from '@/components/ticker'
-import { Trades } from '@/components/trades'
-import { useTradeWebsocket } from '@/hooks/use-trade-websocket'
+import { BinanceTrades } from '@/components/trades'
+import { useBinanceTradeWebsocket } from '@/hooks/use-binance-trade-websocket'
 import { useBinanceTrades } from '@/hooks/use-binance-trades'
 import { useDbTrades } from '@/hooks/use-db-trades'
 import { DbTrades } from '@/components/db-trades'
@@ -12,18 +10,10 @@ import { DbTrades } from '@/components/db-trades'
 const SYMBOL = 'ETHUSDT'
 
 export default function Spot() {
-  const { isConnected: isTradeWebsocketConnected } = useTradeWebsocket()
+  const { isConnected: isTradeWebsocketConnected } = useBinanceTradeWebsocket()
 
-  const { getTrades, trades } = useBinanceTrades()
-  const { getDbTrades, trades: dbTrades } = useDbTrades()
-
-  useEffect(() => {
-    const info = async () => {
-      await getTrades(SYMBOL)
-      await getDbTrades({})
-    }
-    info()
-  }, [])
+  const { trades } = useBinanceTrades()
+  const { trades: dbTrades } = useDbTrades()
 
   return (
     <div className={'p-2'}>
@@ -41,7 +31,7 @@ export default function Spot() {
 
       <DbTrades trades={dbTrades} />
 
-      <Trades trades={trades} />
+      <BinanceTrades trades={trades} />
     </div>
   )
 }

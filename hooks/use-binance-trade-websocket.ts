@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect } from 'react'
-import { useTradeWebSocketStore } from '@/stores/trade-websocket-store'
-import { Trade } from '@/components/trades/trades.types'
+import { useBinanceTradeWebSocketStore } from '@/stores/binance-trade-websocket-store'
+import { BinanceTrade } from '@/components/trades/binance-trades.types'
 
 const SYMBOL = 'ETHUSDT'
 const SOCKET = '@trade'
@@ -9,21 +9,29 @@ const SOCKET = '@trade'
 const url = process.env.NEXT_PUBLIC_BINANCE_SPOT_API_WSS
 // const url = process.env.NEXT_PUBLIC_BINANCE_SPOT_TEST_API_WSS
 
-export const useTradeWebsocket = () => {
-  const isConnected = useTradeWebSocketStore((state) => state.isConnected)
-  const lastPrice = useTradeWebSocketStore((state) => state.lastPrice)
-  const socket = useTradeWebSocketStore((state) => state.socket)
-  const lastTradeTime = useTradeWebSocketStore((state) => state.socket)
+export const useBinanceTradeWebsocket = () => {
+  const isConnected = useBinanceTradeWebSocketStore(
+    (state) => state.isConnected
+  )
+  const lastPrice = useBinanceTradeWebSocketStore((state) => state.lastPrice)
+  const socket = useBinanceTradeWebSocketStore((state) => state.socket)
+  const lastTradeTime = useBinanceTradeWebSocketStore((state) => state.socket)
 
-  const addMessage = useTradeWebSocketStore((state) => state.addMessage)
-  const setConnected = useTradeWebSocketStore((state) => state.setConnected)
-  const setLastPrice = useTradeWebSocketStore((state) => state.setLastPrice)
-  const setlastTradeTime = useTradeWebSocketStore(
+  const addMessage = useBinanceTradeWebSocketStore((state) => state.addMessage)
+  const setConnected = useBinanceTradeWebSocketStore(
+    (state) => state.setConnected
+  )
+  const setLastPrice = useBinanceTradeWebSocketStore(
+    (state) => state.setLastPrice
+  )
+  const setlastTradeTime = useBinanceTradeWebSocketStore(
     (state) => state.setLastTradeTime
   )
-  const setSocket = useTradeWebSocketStore((state) => state.setSocket)
-  const isConnecting = useTradeWebSocketStore((state) => state.isConnecting)
-  const setIsConnecting = useTradeWebSocketStore(
+  const setSocket = useBinanceTradeWebSocketStore((state) => state.setSocket)
+  const isConnecting = useBinanceTradeWebSocketStore(
+    (state) => state.isConnecting
+  )
+  const setIsConnecting = useBinanceTradeWebSocketStore(
     (state) => state.setIsConnecting
   )
 
@@ -64,7 +72,7 @@ export const useTradeWebsocket = () => {
 
       ws.onmessage = (event: MessageEvent<string>) => {
         addMessage(event.data)
-        const { p, T }: Trade = JSON.parse(event.data)
+        const { p, T }: BinanceTrade = JSON.parse(event.data)
         setLastPrice(parseFloat(p))
         setlastTradeTime(T)
       }
