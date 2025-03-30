@@ -2,6 +2,7 @@
 
 import { Checkbox } from '@/components/ui/checkbox'
 import { useDbTrades } from '@/hooks/use-db-trades'
+import { useMemo } from 'react'
 
 export const HideClosed = () => {
   const {
@@ -9,7 +10,10 @@ export const HideClosed = () => {
     setQueryParams,
   } = useDbTrades()
 
-  const checked = excludeStatuses?.includes('closed')
+  const checked = useMemo(
+    () => excludeStatuses?.includes('closed'),
+    [excludeStatuses]
+  )
 
   const handleClick = () => {
     if (!excludeStatuses) return

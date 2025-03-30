@@ -1,4 +1,4 @@
-export type ParsedTrade = {
+export type ParsedBinanceTrade = {
   symbol: string
   id: number
   orderId: number

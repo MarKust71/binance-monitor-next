@@ -1,7 +1,9 @@
-import { ParsedTrade } from '@/utils'
+import { ParsedBinanceTrade } from '@/utils'
 import { BinanceMyTrade } from '@/actions/spot/get-binance-my-trade.types'
 
-export const parseTrade = (trade: BinanceMyTrade): ParsedTrade => {
+export const parseBinanceTrade = (
+  trade: BinanceMyTrade
+): ParsedBinanceTrade => {
   const time = new Date(trade.time)
 
   return {

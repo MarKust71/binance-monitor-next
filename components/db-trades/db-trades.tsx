@@ -1,24 +1,25 @@
 'use client'
 
-import { DbTradesProps } from '@/components/db-trades/db-trades.types'
 import { dbTradesTableColumns } from '@/components/db-trades/db-trades-table'
 import { DataTable } from '@/components/data-table'
-import { useTradeWebSocketStore } from '@/stores/trade-websocket-store'
+import { useBinanceTradeWebSocketStore } from '@/stores/binance-trade-websocket-store'
 import { useMemo } from 'react'
 import { ReFetchTradesButton } from '@/components/re-fetch-trades-button'
 import { ReConnectWebsocketButton } from '@/components/re-connect-websocket-button'
 import { DbTradesPaginationButtons } from '@/components/db-trades/db-trades-pagination-buttons'
-import { useTradeWebsocket } from '@/hooks/use-trade-websocket'
+import { useBinanceTradeWebsocket } from '@/hooks/use-binance-trade-websocket'
 import { useMyAppWebsocket } from '@/hooks/use-my-app-websocket'
 import { priceColumn } from '@/components/db-trades/custom-columns/price-column'
 import { profitColumn } from '@/components/db-trades/custom-columns/profit-column'
 import { HideClosed } from '@/components/db-trades/exclude-statuses-dropdown-menu/hide-closed'
+import { useDbTrades } from '@/hooks/use-db-trades'
 
-export const DbTrades = ({ trades }: DbTradesProps) => {
-  const { isConnected: isTradeWebsocketConnected } = useTradeWebsocket()
+export const DbTrades = () => {
+  const { isConnected: isTradeWebsocketConnected } = useBinanceTradeWebsocket()
   const { isConnected: isMyAppWebsocketConnected } = useMyAppWebsocket()
+  const { trades } = useDbTrades()
 
-  const lastPrice = useTradeWebSocketStore((state) => state.lastPrice)
+  const lastPrice = useBinanceTradeWebSocketStore((state) => state.lastPrice)
 
   const columns = useMemo(() => {
     const columns = [...dbTradesTableColumns]

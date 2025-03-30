@@ -1,2 +1,2 @@
-export * from './parse-trade'
+export * from './parse-binance-trade'
 export * from './parse-order'

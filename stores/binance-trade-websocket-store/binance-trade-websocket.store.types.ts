@@ -1,5 +1,5 @@
 // Definicja typów dla stanu
-export type TradeWebSocketState = {
+export type BinanceTradeWebSocketState = {
   socket: WebSocket | null // Obiekt WebSocket
   messages: string[] // Lista wiadomości
   isConnected: boolean // Status połączenia

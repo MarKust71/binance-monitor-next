@@ -1,10 +1,10 @@
 'use client'
 
 import { ColumnDef } from '@tanstack/react-table'
-import { ParsedTrade } from '@/utils'
+import { ParsedBinanceTrade } from '@/utils'
 import { DbSide } from '@/stores/db-trades-store/db.trades.store.types'
 
-export const tradesTableColumns: ColumnDef<ParsedTrade>[] = [
+export const tradesTableColumns: ColumnDef<ParsedBinanceTrade>[] = [
   {
     accessorKey: 'id',
     header: 'ID',

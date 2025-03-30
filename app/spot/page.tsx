@@ -1,47 +1,20 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 'use client'
 
-import { useEffect } from 'react'
 import { Ticker } from '@/components/ticker'
-import { Trades } from '@/components/trades'
-import { useTradeWebsocket } from '@/hooks/use-trade-websocket'
-import { useBinanceTrades } from '@/hooks/use-binance-trades'
-import { useDbTrades } from '@/hooks/use-db-trades'
+import { BinanceTrades } from '@/components/trades'
 import { DbTrades } from '@/components/db-trades'
-
-const SYMBOL = 'ETHUSDT'
+import { WebsocketConnectionStatus } from '@/components/websocket-connection-status'
 
 export default function Spot() {
-  const { isConnected: isTradeWebsocketConnected } = useTradeWebsocket()
-
-  const { getTrades, trades } = useBinanceTrades()
-  const { getDbTrades, trades: dbTrades } = useDbTrades()
-
-  useEffect(() => {
-    const info = async () => {
-      await getTrades(SYMBOL)
-      await getDbTrades({})
-    }
-    info()
-  }, [])
-
   return (
     <div className={'p-2'}>
-      <h1 className={'text-xl font-extrabold mb-2 flex flex-row gap-2'}>
-        {`${SYMBOL} Spot`}
-        {isTradeWebsocketConnected && (
-          <span className={'text-green-500 font-bold text-sm'}>CONNECTED</span>
-        )}
-        {!isTradeWebsocketConnected && (
-          <span className={'text-red-500 font-bold text-sm'}>DISCONNECTED</span>
-        )}
-      </h1>
+      <WebsocketConnectionStatus />
 
       <Ticker />
 
-      <DbTrades trades={dbTrades} />
+      <DbTrades />
 
-      <Trades trades={trades} />
+      <BinanceTrades />
     </div>
   )
 }
