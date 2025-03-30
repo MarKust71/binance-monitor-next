@@ -21,39 +21,41 @@ export const DbTrades = () => {
 
   const lastPrice = useBinanceTradeWebSocketStore((state) => state.lastPrice)
 
+  const isConnected = useMemo(
+    () => isTradeWebsocketConnected && isMyAppWebsocketConnected,
+    [isTradeWebsocketConnected, isMyAppWebsocketConnected]
+  )
+
   const columns = useMemo(() => {
     const columns = [...dbTradesTableColumns]
     columns[4] = priceColumn({ lastPrice })
     columns[21] = profitColumn({ lastPrice })
+
     return columns
   }, [lastPrice])
 
   return (
-    <div className={'my-2'}>
+    <header className={'my-2'}>
       <h3 className={'text-lg font-semibold'}>DB Trades</h3>
 
       <div className={'flex flex-row justify-between mb-2'}>
-        <div className={'flex flex-row items-center justify-start gap-2'}>
+        <section className={'flex flex-row items-center justify-start gap-2'}>
           <ReFetchTradesButton />
 
-          {(!isTradeWebsocketConnected || !isMyAppWebsocketConnected) && (
-            <ReConnectWebsocketButton
-              disabled={isTradeWebsocketConnected && isMyAppWebsocketConnected}
-            />
-          )}
-        </div>
+          {!isConnected && <ReConnectWebsocketButton disabled={isConnected} />}
+        </section>
 
         {trades && (
-          <div className={'w-full flex flex-row justify-end gap-4'}>
+          <section className={'w-full flex flex-row justify-end gap-4'}>
             {/*<ExcludeStatusesDropdown />*/}
             <HideClosed />
 
             <DbTradesPaginationButtons />
-          </div>
+          </section>
         )}
       </div>
 
       <DataTable columns={columns} data={trades} />
-    </div>
+    </header>
   )
 }
