@@ -1,6 +1,5 @@
 'use client'
 
-import { DbTradesProps } from '@/components/db-trades/db-trades.types'
 import { dbTradesTableColumns } from '@/components/db-trades/db-trades-table'
 import { DataTable } from '@/components/data-table'
 import { useBinanceTradeWebSocketStore } from '@/stores/binance-trade-websocket-store'
@@ -13,10 +12,12 @@ import { useMyAppWebsocket } from '@/hooks/use-my-app-websocket'
 import { priceColumn } from '@/components/db-trades/custom-columns/price-column'
 import { profitColumn } from '@/components/db-trades/custom-columns/profit-column'
 import { HideClosed } from '@/components/db-trades/exclude-statuses-dropdown-menu/hide-closed'
+import { useDbTrades } from '@/hooks/use-db-trades'
 
-export const DbTrades = ({ trades }: DbTradesProps) => {
+export const DbTrades = () => {
   const { isConnected: isTradeWebsocketConnected } = useBinanceTradeWebsocket()
   const { isConnected: isMyAppWebsocketConnected } = useMyAppWebsocket()
+  const { trades } = useDbTrades()
 
   const lastPrice = useBinanceTradeWebSocketStore((state) => state.lastPrice)
 
