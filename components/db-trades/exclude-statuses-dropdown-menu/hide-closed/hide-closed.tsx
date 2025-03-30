@@ -8,6 +8,8 @@ export const HideClosed = () => {
   const {
     queryParams: { excludeStatuses },
     setQueryParams,
+    setPagination,
+    pagination,
   } = useDbTrades()
 
   const checked = useMemo(
@@ -28,7 +30,13 @@ export const HideClosed = () => {
       }
     }
 
-    setQueryParams({ excludeStatuses: newExcludeStatuses })
+    setPagination({
+      ...pagination,
+      offset: 0,
+    })
+    setQueryParams({
+      excludeStatuses: newExcludeStatuses,
+    })
   }
 
   return (
