@@ -1,7 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useDbTradesStore } from '@/stores/db-trades-store'
 import { fetchDbTrades } from '@/actions/spot/fetch-db-trades'
-import { GetDbTradesParams } from './use-db-trades.types'
 import { useEffect } from 'react'
 
 export const useDbTrades = () => {
@@ -14,44 +13,32 @@ export const useDbTrades = () => {
   const setIsFetching = useDbTradesStore((state) => state.setIsFetching)
   const setQueryParams = useDbTradesStore((state) => state.setQueryParams)
 
-  const getDbTrades = async ({
-    offset,
-    limit,
-    customQueryParams,
-  }: GetDbTradesParams) => {
+  const getDbTrades = async () => {
+    const { offset, limit } = useDbTradesStore.getState().pagination
+    const queryParams = useDbTradesStore.getState().queryParams
+    const isFetching = useDbTradesStore.getState().isFetching
+
     if (!isFetching) {
       setIsFetching(true)
-      const dbTrades = await fetchDbTrades(
-        offset ?? pagination.offset,
-        limit ?? pagination.limit,
-        customQueryParams ?? queryParams
-      )
+      const dbTrades = await fetchDbTrades(offset, limit, queryParams)
       setIsFetching(false)
 
-      setTrades(dbTrades.data)
       setPagination(dbTrades.pagination)
-      setQueryParams(customQueryParams ?? queryParams)
+      setTrades(dbTrades.data)
     }
   }
 
   useEffect(() => {
-    getDbTrades({
-      offset: pagination.offset,
-      limit: pagination.limit,
-      customQueryParams: queryParams,
-    })
-  }, [queryParams])
-
-  // useEffect(() => {
-  //   console.log({ isFetching })
-  // }, [isFetching])
+    getDbTrades()
+  }, [queryParams, pagination.offset, pagination.limit])
 
   return {
-    trades,
     getDbTrades,
-    pagination,
     isFetching,
+    pagination,
     queryParams,
+    setPagination,
     setQueryParams,
+    trades,
   }
 }

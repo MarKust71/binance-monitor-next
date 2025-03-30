@@ -2,13 +2,13 @@ import { useDbTrades } from '@/hooks/use-db-trades'
 import { DbTradesPaginationButton } from '@/components/db-trades/db-trades-pagination-button'
 
 export const DbTradesPaginationButtons = () => {
-  const { getDbTrades, pagination } = useDbTrades()
+  const { pagination, setPagination } = useDbTrades()
 
   return (
     <div className={'flex flex-row justify-end gap-1'}>
       <DbTradesPaginationButton
         disabled={pagination.offset === 0}
-        onClick={() => getDbTrades({ offset: 0 })}
+        onClick={() => setPagination({ ...pagination, offset: 0 })}
       >
         {'|<'}
       </DbTradesPaginationButton>
@@ -16,7 +16,8 @@ export const DbTradesPaginationButtons = () => {
       <DbTradesPaginationButton
         disabled={pagination.offset === 0}
         onClick={() =>
-          getDbTrades({
+          setPagination({
+            ...pagination,
             offset: Math.max(pagination.offset - pagination.limit, 0),
           })
         }
@@ -27,7 +28,8 @@ export const DbTradesPaginationButtons = () => {
       <DbTradesPaginationButton
         disabled={!pagination.has_next}
         onClick={() =>
-          getDbTrades({
+          setPagination({
+            ...pagination,
             offset: Math.min(
               pagination.offset + pagination.limit,
               Math.floor(pagination.total / pagination.limit) * pagination.limit
@@ -41,7 +43,8 @@ export const DbTradesPaginationButtons = () => {
       <DbTradesPaginationButton
         disabled={!pagination.has_next}
         onClick={() =>
-          getDbTrades({
+          setPagination({
+            ...pagination,
             offset:
               Math.floor(pagination.total / pagination.limit) *
               pagination.limit,

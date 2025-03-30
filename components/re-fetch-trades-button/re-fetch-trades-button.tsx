@@ -16,7 +16,7 @@ export const ReFetchTradesButton = () => {
 
   const handleClick = async () => {
     await getTrades(SYMBOL)
-    await getDbTrades({})
+    await getDbTrades()
   }
 
   return (
