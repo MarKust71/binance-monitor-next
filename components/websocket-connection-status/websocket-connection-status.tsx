@@ -1,7 +1,7 @@
 import { useBinanceTradeWebsocket } from '@/hooks/use-binance-trade-websocket'
 import { useMyAppWebsocket } from '@/hooks/use-my-app-websocket'
 
-const SYMBOL = 'ETHUSDT'
+const SYMBOL = 'ETHUSDC'
 
 export const WebsocketConnectionStatus = () => {
   const { isConnected: isTradeWebsocketConnected } = useBinanceTradeWebsocket()

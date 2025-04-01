@@ -4,7 +4,7 @@ import { useEffect } from 'react'
 import { useBinanceTrades } from '@/hooks/use-binance-trades'
 import { useDbTrades } from '@/hooks/use-db-trades'
 
-const SYMBOL = 'ETHUSDT'
+const SYMBOL = 'ETHUSDC'
 
 const url = process.env.NEXT_PUBLIC_MY_APP_WS_URL
 

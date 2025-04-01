@@ -20,7 +20,7 @@ export const Ticker = () => {
 
   useEffect(() => {
     const init = async () => {
-      const trades = await getBinanceTrades('ETHUSDT')
+      const trades = await getBinanceTrades('ETHUSDC')
       const price = parseFloat(trades[0].price)
       setInitPrice(price)
       calculateProfit(price)
