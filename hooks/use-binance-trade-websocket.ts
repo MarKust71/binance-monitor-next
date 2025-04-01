@@ -3,7 +3,7 @@ import { useEffect } from 'react'
 import { useBinanceTradeWebSocketStore } from '@/stores/binance-trade-websocket-store'
 import { BinanceTrade } from '@/components/trades/binance-trades.types'
 
-const SYMBOL = 'ETHUSDT'
+const SYMBOL = 'ETHUSDC'
 const SOCKET = '@trade'
 
 const url = process.env.NEXT_PUBLIC_BINANCE_SPOT_API_WSS

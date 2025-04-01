@@ -3,7 +3,7 @@ import { useDbTrades } from '@/hooks/use-db-trades'
 import { useBinanceTrades } from '@/hooks/use-binance-trades'
 import { useMemo } from 'react'
 
-const SYMBOL = 'ETHUSDT'
+const SYMBOL = 'ETHUSDC'
 
 export const ReFetchTradesButton = () => {
   const { getTrades, isFetching: isFetchingTrades } = useBinanceTrades()
