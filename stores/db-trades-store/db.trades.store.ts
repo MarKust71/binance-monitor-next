@@ -30,6 +30,11 @@ export const useDbTradesStore = create<DbTradesState>()(
     }),
     {
       name: 'db-trades-storage', // unique name
+      partialize: (state) => ({
+        trades: state.trades,
+        pagination: state.pagination,
+        queryParams: state.queryParams,
+      }),
     }
   )
 )
